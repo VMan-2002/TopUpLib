@@ -59,12 +59,17 @@ match_indent = true
 # Custom fallback pool items
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = '''if _pool_size == 0 then'''
-position = "at"
-payload = '''if _pool_size == 0 and topuplib.createFallbackPoolItem(_type, _pool) then'''
+pattern = '''--if pool is empty'''
+position = "after"
+payload = '''local _topuplib_new_pool_item = topuplib.createFallbackPoolItem(_type, _pool)
+if _pool_size == 0 and _topuplib_new_pool_item then
+	_pool_size = 1
+	_pool[#_pool + 1] = _topuplib_new_pool_item
+end'''
 match_indent = true
 
 [[patches]]
+# UV image pixellated rect
 [patches.pattern]
 target = '''engine/ui.lua'''
 pattern = '''else
