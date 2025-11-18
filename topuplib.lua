@@ -38,7 +38,8 @@ topuplib = {
 	font_options = {}
 }
 local topuplib = topuplib
-do -- Misc
+do --Debugging
+	--Print details about an object's keys and values
 	topuplib.inspect = function(name, value)
 		if not value then
 			value = name
@@ -60,6 +61,7 @@ do -- Misc
 			print(name .. ": " .. tostring(value) .. " of type " .. t)
 		end
 	end
+	--Find a substring inside an object's keys and string values (includes metatable properties)
 	topuplib.findIn = function(obj, key, path, tables)
 		path = path or ""
 		tables = tables or {}
@@ -94,16 +96,27 @@ do -- Misc
 			i = i + 2
 		end
 	end
+end
+do -- Misc
+	--Returns false, can be used to avoid creating new function objects
 	topuplib.returnFalse = function() return false end
+	--Returns true, can be used to avoid creating new function objects
 	topuplib.returnTrue = function() return true end
+	--todo: implement
 	topuplib.useTwice = false
+	--Texts that can be added in object descriptions
 	topuplib.txwip = "{C:chips,s:0.7}(wip){}"
 	topuplib.txnyi = "{C:chips,s:0.7}(nyi){}"
 	topuplib.txbug = "{C:chips,s:0.7}(known bugs){}"
-	topuplib.num = to_number or topuplib.same
-	topuplib.big = to_big or topuplib.same
+	--Returns the same as one input value
 	topuplib.same = function(value) return value end
+	--Fallback for to_number from talisman
+	topuplib.num = to_number or topuplib.same
+	--Fallback for to_big from talisman
+	topuplib.big = to_big or topuplib.same
+	--Override this function in your custom shapes
 	topuplib.pixellated_rect = topuplib.returnFalse
+	--Add an option to topuplib config for your mod's UI element shape
 	topuplib.addPixellatedRectOption = function(label, id, mod)
 		mod = mod and SMODS.Mods[mod] or SMODS.current_mod
 		if mod.id ~= SMODS.Mods.TopUpLib.id then
@@ -111,6 +124,7 @@ do -- Misc
 		end
 		table.insert(topuplib.pixellated_rect_options, {label = label, id = id, mod = mod.id})
 	end
+	--Add an option to topuplib config for your mod's font
 	topuplib.addFontOption = function(label, id, mod)
 		mod = mod and SMODS.Mods[mod] or SMODS.current_mod
 		if mod.id ~= SMODS.Mods.TopUpLib.id then
@@ -118,6 +132,7 @@ do -- Misc
 		end
 		table.insert(topuplib.font_options, {label = label, id = id, mod = mod.id})
 	end
+	--Add a function to G.FUNCS with a unique name, and returns that name
 	topuplib.addUniqueFunc = function(func)
 		local i, n = 0
 		while true do
@@ -129,6 +144,7 @@ do -- Misc
 			i = i + 1
 		end
 	end
+	--Copies a table's keys and values
 	topuplib.tableShallowCopy = function(tbl)
 		local result = {}
 		for k,v in pairs(tbl) do
@@ -136,33 +152,14 @@ do -- Misc
 		end
 		return result
 	end
-	topuplib.draw_pixellated_rect_textured = function(self, _type, _parallax, _emboss, _progress)
-		if not self.pixellated_rect then
-			self:draw_pixellated_rect(_type, _parallax, _emboss, _progress)
-		end
-		love.graphics.setColor(G.C.WHITE)
-		love.graphics.draw(self.pixellated_rect_textured_mesh)
-	end
-	topuplib.pixellated_rect_uv = function(self, verts, w, h)
-		if not self.config.pixellated_rect_texture then return end
-		local result = {}
-		local i = 1
-		while i < #verts do
-			result[#result+1] = {verts[i], verts[i+1], verts[i] / w, verts[i+1] / h}
-			i = i + 2
-		end
-		local mesh = love.graphics.newMesh(result, "fan", "static")
-		mesh:setTexture(self.config.pixellated_rect_texture)
-		return mesh
-	end
 end
 do -- Text
+	--Adds predefined formatting to a single string
 	topuplib.formatString = function(text, f)
-		--Adds predefined formatting to a single string
 		return topuplib.tforms[f]..text
 	end
+	--Adds predefined formatting and joins strings
 	topuplib.formatText = function(arr)
-		--Adds predefined formatting and joins strings
 		local result = ""
 		for k,v in pairs(arr) do
 			result = result .. topuplib.formatString(v[1] or "", v[2] or "r")
@@ -171,8 +168,9 @@ do -- Text
 	end
 end
 do -- Object spawning
+	--Create and open a booster pack
 	topuplib.openBooster = function(key, extra)
-		--Note: Opening a booster while a booster is open does weird shit, so don't.
+		--Note: Opening a booster while a booster is open does weird shit
 		local card = Card(
 			G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
 			G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2,
@@ -189,6 +187,7 @@ do -- Object spawning
 		G.FUNCS.use_card({config = {ref_table = card}})
 		card:start_materialize()
 	end
+	--Give a tag
 	topuplib.giveTag = function(key)
 		G.E_MANAGER:add_event(Event({
 			func = (function()
@@ -223,6 +222,28 @@ do -- Cards
 	topuplib.cardAreaHasRoom = function(cardarea, amount)
 		cardarea = cardarea or G.jokers
 		return #G.jokers.cards < G.jokers.config.card_limit + (amount or 1)
+	end
+end
+do -- Internal use
+	-- Don't mess with these functions unless you know what you're doing
+	topuplib.draw_pixellated_rect_textured = function(self, _type, _parallax, _emboss, _progress)
+		if not self.pixellated_rect then
+			self:draw_pixellated_rect(_type, _parallax, _emboss, _progress)
+		end
+		love.graphics.setColor(G.C.WHITE)
+		love.graphics.draw(self.pixellated_rect_textured_mesh)
+	end
+	topuplib.pixellated_rect_uv = function(self, verts, w, h)
+		if not self.config.pixellated_rect_texture then return end
+		local result = {}
+		local i = 1
+		while i < #verts do
+			result[#result+1] = {verts[i], verts[i+1], verts[i] / w, verts[i+1] / h}
+			i = i + 2
+		end
+		local mesh = love.graphics.newMesh(result, "fan", "static")
+		mesh:setTexture(self.config.pixellated_rect_texture)
+		return mesh
 	end
 end
 
@@ -285,6 +306,9 @@ if config.font and (config.font ~= "?none") then
 	local modlol = SMODS.Mods[config.font_mod].path
 	local modfolder = string.sub(modlol, string.find(modlol, "/"), nil)
 	p.FONT = love.graphics.newFont( "Mods" .. modfolder .. "assets/fonts/" .. p.file, p.render_scale)
+	if p.antialias then
+		p.FONT:setFilter("linear", "linear")
+	end
 	for k,v in pairs(G.LANGUAGES) do
 		if v.font == G.FONTS[1] then
 			v.font = p
