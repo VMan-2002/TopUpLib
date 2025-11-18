@@ -148,11 +148,11 @@ do -- Misc
 		local result = {}
 		local i = 1
 		while i < #verts do
-			result[#result+1] = {verts[i], verts[i+1], verts[i] / w, verts[i+1] / h, 1, 1, 1, 1}
+			result[#result+1] = {verts[i], verts[i+1], verts[i] / w, verts[i+1] / h}
 			i = i + 2
 		end
 		local mesh = love.graphics.newMesh(result, "fan", "static")
-		mesh:setTexture(pixellated_rect_texture)
+		mesh:setTexture(self.config.pixellated_rect_texture)
 		return mesh
 	end
 end
