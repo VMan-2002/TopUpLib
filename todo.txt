@@ -1,0 +1,4 @@
+- Tooltip badges with inline layout (not always vertical layout)
+- Better Run Info vouchers view
+- Card area grid view
+- Multi-select consumables/jokers without Cryptid mod

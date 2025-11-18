@@ -1,0 +1,55 @@
+[manifest]
+version = "1.0.0"
+priority = 0
+
+[[patches]]
+# Pixellated Rect
+[patches.pattern]
+target = "engine/ui.lua"
+pattern = 'for k, v in ipairs(vertices) do'
+position = "before"
+payload = '''
+vertices = topuplib.pixellated_rect(0, ext_up, totw, toth, res) or vertices
+'''
+match_indent = true
+
+[[patches]]
+# Font
+[patches.pattern]
+target = "game.lua"
+pattern = 'for _, v in ipairs(self.FONTS) do'
+position = "before"
+payload = '''
+--render_scale: Visual size of the font itself
+--TEXT_HEIGHT_SCALE: Text line spacing scale
+--TEXT_OFFSET: Offset of the text position
+--FONTSCALE: Affects font size. Not consistent, may need more research and/or testing
+--squish: Increasing this makes the font more wider than tall
+--DESCSCALE: Scale for the font in description elements
+self.FONTS[1] = (topuplib and topuplib.font_replacement) or self.FONTS[1]
+'''
+match_indent = true
+
+[[patches]]
+# Bunco replaces the vanilla font, this gets in the way of topup's custom font implementation
+# However you will see squares where Bunco's suit icons would otherwise be
+[patches.pattern]
+target = '''=[SMODS Bunco "Bunco.lua"]'''
+pattern = '''local font_replacement = NFS.read(BUNCOMOD.content.path..'assets/fonts/font.ttf')
+love.filesystem.write('font_replacement.ttf', font_replacement)
+G.FONTS[1].FONT = love.graphics.newFont('font_replacement.ttf', G.TILESIZE * 10)
+love.filesystem.remove('font_replacement.ttf')'''
+position = "before"
+payload = '''if not topuplib.font_replacement then '''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Bunco "Bunco.lua"]'''
+pattern = '''local font_replacement = NFS.read(BUNCOMOD.content.path..'assets/fonts/font.ttf')
+love.filesystem.write('font_replacement.ttf', font_replacement)
+G.FONTS[1].FONT = love.graphics.newFont('font_replacement.ttf', G.TILESIZE * 10)
+love.filesystem.remove('font_replacement.ttf')'''
+position = "after"
+payload = ''' end'''
+match_indent = true

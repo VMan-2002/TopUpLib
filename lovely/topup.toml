@@ -1,0 +1,88 @@
+[manifest]
+version = "1.0.0"
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "elseif self.config.type == 'joker' or self.config.type == 'consumeable' then"
+position = "after"
+payload = '''
+	self.config.highlighted_limit = 1e101
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+# Use Twice
+[patches.pattern]
+target = "card.lua"
+pattern = 'local obj = self.config.center'
+position = "before"
+payload = '''
+--looks like a poopoo
+'''
+match_indent = true
+
+[[patches]]
+# Fix overflowing other section in challenges
+[patches.regex]
+target = "functions/UI_definitions.lua"
+pattern = '''local (?<one>temp_blind = AnimatedSprite\()0,0,1,1,(?<two> [^)]+\))'''
+position = "at"
+payload = '''local temp_blind
+do
+	local scale = math.min(3.75/#other_tab, 1)
+	$one 0,0,scale,scale, $two
+end'''
+match_indent = true
+
+[[patches]]
+# Fix undefined cards in challenges ui causing crash
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''for k, v in ipairs(row_card) do'''
+position = "after"
+payload = '''if G.P_CENTERS[v.id] then'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''banned_card_area:emplace(card)'''
+position = "after"
+payload = '''
+end'''
+match_indent = true
+
+[[patches]]
+# Custom fallback pool items
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''if _pool_size == 0 then'''
+position = "at"
+payload = '''if _pool_size == 0 and topuplib.createFallbackPoolItem(_type, _pool) then'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''engine/ui.lua'''
+pattern = '''else
+                        self:draw_pixellated_rect('fill', parallax_dist)'''
+position = "before"
+payload = '''
+elseif self.config.pixellated_rect_texture then topuplib.draw_pixellated_rect_textured(self, 'fill', 'parallax_dist')
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = '''engine/ui.lua'''
+pattern = '''for k, v in ipairs(vertices) do'''
+position = "before"
+payload = '''
+self.pixellated_rect_textured_mesh = topuplib.pixellated_rect_uv(self, vertices, totw, toth)
+'''
+match_indent = true
+times = 1

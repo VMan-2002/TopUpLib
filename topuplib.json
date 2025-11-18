@@ -1,0 +1,17 @@
+{
+	"id": "TopUpLib",
+	"name": "Top-Up Lib",
+	"author": ["VMan_2002"],
+    "badge_colour": "0077ff",
+	"description": "Various modding features and enhancements for the Balatro video game",
+	"prefix": "topuplib",
+	"main_file": "topuplib.lua",
+    "version": "0.0.0",
+    "priority": -999990,
+    "dependencies": [
+        "Steamodded (>=1.0.0~ALPHA-1424a)",
+        "Lovely (>=0.6.0)"
+    ],
+    "conflicts": [
+    ]
+}
