@@ -107,14 +107,14 @@ do -- Misc
 	topuplib.addPixellatedRectOption = function(label, id, mod)
 		mod = mod and SMODS.Mods[mod] or SMODS.current_mod
 		if mod.id ~= SMODS.Mods.TopUpLib.id then
-			label = label .. "(" .. mod.name .. ")"
+			label = label .. " (" .. mod.name .. ")"
 		end
 		table.insert(topuplib.pixellated_rect_options, {label = label, id = id, mod = mod.id})
 	end
 	topuplib.addFontOption = function(label, id, mod)
 		mod = mod and SMODS.Mods[mod] or SMODS.current_mod
 		if mod.id ~= SMODS.Mods.TopUpLib.id then
-			label = label .. "(" .. mod.name .. ")"
+			label = label .. " (" .. mod.name .. ")"
 		end
 		table.insert(topuplib.font_options, {label = label, id = id, mod = mod.id})
 	end
@@ -321,7 +321,7 @@ mod.config_tab = function()
 			info = {"The shape of UI element boxes (pixellated_rect). Game will restart."},
 			current_option = pixellated_rect_select,
 			colour = G.C.BLUE,
-			w = 8,
+			w = 9,
 			opt_callback = topuplib.addUniqueFunc(function(arg)
 				local o = topuplib.pixellated_rect_options[arg.cycle_config.current_option]
 				config.pixellated_rect = o.id or "?none"
@@ -335,7 +335,7 @@ mod.config_tab = function()
 			info = {"Change the game's font. Only standard font, not RU/JP/CN/KO. Game will restart."},
 			current_option = font_select,
 			colour = G.C.BLUE,
-			w = 8,
+			w = 9,
 			opt_callback = topuplib.addUniqueFunc(function(arg)
 				local o = topuplib.font_options[arg.cycle_config.current_option]
 				config.font = o.id or "?none"
