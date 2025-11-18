@@ -97,9 +97,9 @@ do -- Misc
 	topuplib.returnFalse = function() return false end
 	topuplib.returnTrue = function() return true end
 	topuplib.useTwice = false
-	topuplib.txwip = "{C:vmanlol,s:0.7}(wip){}"
-	topuplib.txnyi = "{C:vmanlol,s:0.7}(nyi){}"
-	topuplib.txbug = "{C:vmanlol,s:0.7}(known bugs){}"
+	topuplib.txwip = "{C:chips,s:0.7}(wip){}"
+	topuplib.txnyi = "{C:chips,s:0.7}(nyi){}"
+	topuplib.txbug = "{C:chips,s:0.7}(known bugs){}"
 	topuplib.num = to_number or topuplib.same
 	topuplib.big = to_big or topuplib.same
 	topuplib.same = function(value) return value end
