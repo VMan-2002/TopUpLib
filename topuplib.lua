@@ -303,18 +303,20 @@ end
 if config.font and (config.font ~= "?none") then
 	print("Load font: ", pcall(SMODS.load_file(config.font..".lua", config.font_mod)))
 	local p = topuplib.font_replacement
-	local modlol = SMODS.Mods[config.font_mod].path
-	local modfolder = string.sub(modlol, string.find(modlol, "/"), nil)
-	p.FONT = love.graphics.newFont( "Mods" .. modfolder .. "assets/fonts/" .. p.file, p.render_scale)
-	if p.antialias then
-		p.FONT:setFilter("linear", "linear")
-	end
-	for k,v in pairs(G.LANGUAGES) do
-		if v.font == G.FONTS[1] then
-			v.font = p
+	if p then
+		local modlol = (SMODS.Mods[config.font_mod] or SMODS.current_mod).path
+		local modfolder = string.sub(modlol, string.find(modlol, "/"), nil)
+		p.FONT = love.graphics.newFont( "Mods" .. modfolder .. "assets/fonts/" .. p.file, p.render_scale)
+		if p.antialias then
+			p.FONT:setFilter("linear", "linear")
 		end
+		for k,v in pairs(G.LANGUAGES) do
+			if v.font == G.FONTS[1] then
+				v.font = p
+			end
+		end
+		G.FONTS[1] = p
 	end
-	G.FONTS[1] = p
 end
 
 mod.config_tab = function()
