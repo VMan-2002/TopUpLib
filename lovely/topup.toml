@@ -91,3 +91,12 @@ self.pixellated_rect_textured_mesh = topuplib.pixellated_rect_uv(self, vertices,
 '''
 match_indent = true
 times = 1
+
+[[patches]]
+# Unset music
+[patches.pattern]
+target = '''functions/button_callbacks.lua'''
+pattern = '--Remove any existing overlays if there is one'
+position = "after"
+payload = "topuplib.music = nil"
+match_indent = true
