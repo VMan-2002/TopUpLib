@@ -15,6 +15,7 @@ Players can customize the following via the mod's config menu:
 ## Update check
 Currently this only checks for mod's requirements/recommendations.
 This requires a `topuplib_meta.json` in the mod's folder.
+See [`topuplib_meta_example.json`](https://github.com/VMan-2002/TopUpLib/blob/main/topuplib_meta_example.json) for example.
 
 ## Testing features
 When [DebugPlus](https://github.com/WilsontheWolf/DebugPlus) is installed and enabled,
