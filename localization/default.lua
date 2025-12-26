@@ -76,7 +76,9 @@ return {
 			bl_topuplib_debuff = {
 				name = "Disapproving Blind",
 				text = {
-					"All cards are debuffed"
+					"All cards are debuffed",
+					"(Click blind chip to",
+					"change card category)"
 				}
 			},
 			bl_topuplib_notallowed = {

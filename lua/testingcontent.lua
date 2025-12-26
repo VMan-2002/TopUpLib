@@ -99,8 +99,60 @@ function SMODS.injectItems(...)
 		boss = {min = -99, max = 1e4},
 		mult = 1,
 		boss_colour = HEX("FF2C2B"),
-		recalc_debuff = topuplib.returnTrue
+		recalc_debuff = function(self, card)
+			if self.debuffCategory == 1 then
+				return true
+			elseif self.debuffCategory == 2 then
+				return card.area == G.hand
+			elseif self.debuffCategory == 3 then
+				if card.area ~= G.hand then	return false end
+				for k,v in ipairs(G.hand.cards) do
+					if v == card and k - 0.7 < #G.hand.cards * 0.5 then return true end
+				end
+			elseif self.debuffCategory == 4 then
+				return card.area == G.hand and card.area.cards[1] == card
+			elseif self.debuffCategory == 5 then
+				return card.config.center.set == "Joker"
+			elseif self.debuffCategory == 6 then
+				return card.area == G.jokers and card.area.cards[1] == card
+			end
+			return false
+		end,
+		debuffCategory = 1
 	}
+
+	local bclick = Blind.click
+	function Blind.click(self, ...) 
+		if self.name == "bl_topuplib_debuff" then
+			bl_debuff.debuffCategory = bl_debuff.debuffCategory + 1
+			local cat = {
+				"Now debuffing ALL CARDS",
+				"Now debuffing CARDS IN HAND",
+				"Now debuffing LEFT HALF OF HAND",
+				"Now debuffing LEFTMOST CARD IN HAND",
+				"Now debuffing JOKERS",
+				"Now debuffing LEFTMOST JOKER"
+				--other debuff categories
+			}
+			if bl_debuff.debuffCategory > #cat then
+				bl_debuff.debuffCategory = 1
+			end
+			print(cat[bl_debuff.debuffCategory])
+			
+			for k,v in pairs({
+				G.hand,
+				G.jokers
+				--other types of debuffables
+			}) do
+				if v then
+					for _,v2 in pairs(v.cards) do
+						SMODS.recalc_debuff(v2)
+					end
+				end
+			end
+		end
+		bclick(self, ...)
+	end
 
 	local bl_notallowed = SMODS.Blind {
 		key = "topuplib_notallowed",
