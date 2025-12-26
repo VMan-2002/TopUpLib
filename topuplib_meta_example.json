@@ -1,0 +1,24 @@
+{
+	"_comment": [
+		"topuplib_meta.json file goes in your mod's folder",
+		"This file describes the specification for topuplib_meta.json",
+		"githubPath is the A/B, where A is the username and B is the name of the repository"
+	],
+	"githubPath": "VMan-2002/TopUpLib",
+	"relations": [
+		{
+			"id": "Talisman",
+			"githubPath": "MathIsFun0/Talisman",
+			"version": "2.6",
+			"_comment": [
+				"version is optional. You may also specify maxVersion, however this is not used yet."
+			],
+			"type": "required",
+			"_comment": [
+				"type may be:",
+				"required: The mod is required in order to use this mod",
+				"recommended: This mod is recommended for the best baseline experience, but is not required"
+			]
+		}
+	]
+}

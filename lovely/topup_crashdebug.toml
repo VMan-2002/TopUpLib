@@ -1,0 +1,32 @@
+[manifest]
+version = "1.0.0"
+priority = 1
+
+[[patches]]
+[patches.pattern]
+target = "engine/ui.lua"
+pattern = "local button_being_pressed = false"
+position = "after"
+payload = '''
+	if not self.config.colour then
+		print("WARNING: UIElement's config.colour was undefined (from UIElement:draw_self)")
+		self.config.colour = {1,1,1,1}
+	end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "function Card:set_ability(center, initial, delay_sprites)"
+position = "after"
+payload = '''
+	if not center then
+		print("WARNING: Card's center to be set was invalid (from Card:set_ability)")
+		print(debug.traceback())
+		center = G.P_CENTERS.j_joker
+	end
+'''
+match_indent = true
+times = 1

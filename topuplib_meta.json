@@ -1,0 +1,20 @@
+{
+	"githubPath": "VMan-2002/TopUpLib",
+	"relations": [
+		{
+			"id": "Handy",
+			"githubPath": "SleepyG11/HandyBalatro",
+			"type": "recommended"
+		},
+		{
+			"id": "ProfilesPlus",
+			"githubPath": "DigitalDetective47/profiles-plus",
+			"type": "recommended"
+		},
+		{
+			"id": "cartomancer",
+			"githubPath": "stupxd/Cartomancer",
+			"type": "recommended"
+		}
+	]
+}

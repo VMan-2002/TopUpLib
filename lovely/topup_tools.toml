@@ -1,0 +1,13 @@
+[manifest]
+version = "1.0.0"
+priority = 0
+
+#Todo
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "--"
+position = "at"
+payload = '''--'''
+match_indent = true
+times = 1

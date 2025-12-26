@@ -1,44 +1,45 @@
 --	so uhhh yeah
 --	this is library!
 
-topuplib = {
-	tforms = {
-		-- Scoring
-		mult = "{C:mult}",
-		xmult = "{X:mult,C:white}",
-		chips = "{C:chips}",
-		xchips = "{X:chips,C:white}",
-		money = "{C:money}",
-		xmoney = "{X:money,C:white}",
-		
-		--Suits
-		clubs = "{C:clubs}",
-		hearts = "{C:hearts}",
-		spades  = "{C:spades}",
-		diamonds = "{C:diamonds}",
-		
-		--Items
-		tarot = "{C:tarot}",
-		planet = "{C:planet}",
-		spectral = "{C:spectral}",
-		
-		--Modifiers
-		edition = "{C:edition}",
-		dark_edition = "{C:dark_edition}",
-		
-		--Other
-		r = "{}",
-		vman = "{C:vmanlol}",
-		chance = "{C:green}",
-		small = "{C:inactive,s:0.7}",
-		attention = "{C:attention}",
-		inactive = "{C:inactive}"
-	},
-	pixellated_rect_options = {},
-	font_options = {}
-}
+topuplib = topuplib or {}
 local topuplib = topuplib
+topuplib.tforms = {
+	-- Scoring
+	mult = "{C:mult}",
+	xmult = "{X:mult,C:white}",
+	chips = "{C:chips}",
+	xchips = "{X:chips,C:white}",
+	money = "{C:money}",
+	xmoney = "{X:money,C:white}",
+	
+	--Suits
+	clubs = "{C:clubs}",
+	hearts = "{C:hearts}",
+	spades  = "{C:spades}",
+	diamonds = "{C:diamonds}",
+	
+	--Items
+	tarot = "{C:tarot}",
+	planet = "{C:planet}",
+	spectral = "{C:spectral}",
+	
+	--Modifiers
+	edition = "{C:edition}",
+	dark_edition = "{C:dark_edition}",
+	
+	--Other
+	r = "{}",
+	vman = "{C:vmanlol}",
+	chance = "{C:green}",
+	small = "{C:inactive,s:0.7}",
+	attention = "{C:attention}",
+	inactive = "{C:inactive}"
+}
+topuplib.pixellated_rect_options = {}
+topuplib.font_options = {}
 do --Debugging
+	--`true` if the DebugPlus mod is installed and enabled
+	topuplib.debug = SMODS.Mods.DebugPlus and not SMODS.Mods.DebugPlus.disabled
 	--Print details about an object's keys and values
 	topuplib.inspect = function(name, value)
 		if not value then
@@ -152,6 +153,14 @@ do -- Misc
 		end
 		return result
 	end
+	--Gets a mod's folder name. Result starts and ends with "/".
+	--Technical mods (Lovely, Balatro) may return nil.
+	topuplib.modFolderName = function(name)
+		local modlol = (name and SMODS.Mods[name] or SMODS.current_mod).path
+		if not modlol then return nil end
+		local modfolder = string.sub(modlol, string.find(modlol, "/"), nil)
+		return modfolder
+	end
 end
 do -- Text
 	--Adds predefined formatting to a single string
@@ -166,6 +175,36 @@ do -- Text
 		end
 		return result
 	end
+	--this is cleaner but that doesn't make me not uncomfy when i am criticized like i am committing an actual crime
+	--[[topuplib.quickFormat = function(...)
+		local i, endb = 1
+		for k,v in ipairs(arg) do
+			
+		end
+	end]]
+	
+	--[[
+quickFormat = function(...)
+	local startb, endb = 1
+	local result = {...}
+	for k,v in ipairs(result) do
+	    --fuckmyass killme
+	    startb = 0
+	    while true do
+	        startb = v:find("{", startb + 1)
+	        if not i then
+	            print("aa")
+	            break
+	        end
+	        endb = v:find("}", startb)
+	        print(v:sub(startb, endb))
+	    end
+	end
+	return unpack(result)
+end
+print("a")
+print(quickFormat("{chips}+25{} Chips"))
+	]]
 end
 do -- Object spawning
 	--Create and open a booster pack
@@ -258,15 +297,6 @@ function create_UIBox_generic_options(arg, ...)
 	end
 	return r
 end]]
-
---[[local rq = {}
-
-for i, v in ipairs(rq) do
-	local a = assert(SMODS.load_file("lua/"..v..".lua"))()
-	if type(a) == "function" then
-		a(topuplib)
-	end
-end]]
 local mod = SMODS.current_mod
 local config = mod.config
 
@@ -304,9 +334,7 @@ if config.font and (config.font ~= "?none") then
 	print("Load font: ", pcall(SMODS.load_file(config.font..".lua", config.font_mod)))
 	local p = topuplib.font_replacement
 	if p then
-		local modlol = (SMODS.Mods[config.font_mod] or SMODS.current_mod).path
-		local modfolder = string.sub(modlol, string.find(modlol, "/"), nil)
-		p.FONT = love.graphics.newFont( "Mods" .. modfolder .. "assets/fonts/" .. p.file, p.render_scale)
+		p.FONT = love.graphics.newFont( "Mods" .. topuplib.modFolderName(config.font_mod or mod.id) .. "assets/fonts/" .. p.file, p.render_scale)
 		if p.antialias then
 			p.FONT:setFilter("linear", "linear")
 		end
@@ -368,7 +396,31 @@ mod.config_tab = function()
 				config.font_mod = (o.id and (o.mod ~= "TopUpLib")) and o.mod or nil
 				SMODS.full_restart = math.huge
 			end)
+		}),
+		create_option_cycle({
+			label = "Enable Updater",
+			options = {"Yes", "Only Requirements", "No"},
+			info = {"Enable updater: Checks for mod updates/requirements on startup."},
+			current_option = config.updater,
+			colour = G.C.BLUE,
+			w = 9,
+			opt_callback = topuplib.addUniqueFunc(function(arg)
+				config.updater = arg.cycle_config.current_option
+			end)
 		})
 	}}
 end
 
+local rq = {
+	"updater",
+	topuplib.debug and "testingcontent"
+}
+
+for i, v in ipairs(rq) do
+	if v then
+		local a = assert(SMODS.load_file("lua/"..v..".lua"))()
+		if type(a) == "function" then
+			a(topuplib)
+		end
+	end
+end
