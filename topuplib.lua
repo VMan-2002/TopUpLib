@@ -411,8 +411,18 @@ mod.config_tab = function()
 	}}
 end
 
+if topuplib.debug and false then --todo: is this a good idea
+	SMODS.current_mod.optional_features = {
+		quantum_enhancements = true,
+		retrigger_joker = true,
+		post_trigger = true,
+		cardareas = {deck = true, discard = true}
+	}
+end
+
 local rq = {
 	"updater",
+	"patches",
 	topuplib.debug and "testingcontent"
 }
 
