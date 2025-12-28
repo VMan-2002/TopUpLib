@@ -103,8 +103,6 @@ do -- Misc
 	topuplib.returnFalse = function() return false end
 	--Returns true, can be used to avoid creating new function objects
 	topuplib.returnTrue = function() return true end
-	--todo: implement
-	topuplib.useTwice = false
 	--Texts that can be added in object descriptions
 	topuplib.txwip = "{C:chips,s:0.7}(wip){}"
 	topuplib.txnyi = "{C:chips,s:0.7}(nyi){}"
@@ -261,6 +259,9 @@ do -- Cards
 	topuplib.cardAreaHasRoom = function(cardarea, amount)
 		cardarea = cardarea or G.jokers
 		return #G.jokers.cards < G.jokers.config.card_limit + (amount or 1)
+	end
+	topuplib.allIsSameSuit = function(cards, suit)
+		
 	end
 end
 do -- Internal use
@@ -423,7 +424,7 @@ end
 local rq = {
 	"updater",
 	"patches",
-	topuplib.debug and "testingcontent"
+	(topuplib.debug or Cryptid) and "testingcontent"
 }
 
 for i, v in ipairs(rq) do
