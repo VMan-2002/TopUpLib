@@ -47,7 +47,7 @@ function SMODS.injectItems(...)
 	local j_infinit, stake_infinit, bl_infinit, bl_debuff, bl_notallowed
 
 	if topuplib.debug then
-		local j_infinit = SMODS.Joker {
+		j_infinit = SMODS.Joker {
 			key = "topuplib_infinit",
 			loc_vars = function()
 				return {vars = {lol}}
@@ -64,7 +64,7 @@ function SMODS.injectItems(...)
 			in_pool = topuplib.returnFalse
 		}
 
-		local stake_infinit = SMODS.Stake {
+		stake_infinit = SMODS.Stake {
 			key = "topuplib_infinit",
 			atlas = "topuplib_testingcontent_stake",
 			pos = {x=0,y=0},
@@ -79,7 +79,7 @@ function SMODS.injectItems(...)
 			end
 		}
 
-		local bl_infinit = SMODS.Blind {
+		bl_infinit = SMODS.Blind {
 			key = "topuplib_infinit",
 			atlas = "topuplib_testingcontent_blind",
 			pos = {x=0,y=0},
@@ -91,7 +91,7 @@ function SMODS.injectItems(...)
 			boss_colour = HEX("8766FF")
 		}
 
-		local bl_debuff = SMODS.Blind {
+		bl_debuff = SMODS.Blind {
 			key = "topuplib_debuff",
 			atlas = "topuplib_testingcontent_blind",
 			pos = {x=0,y=1},
@@ -156,7 +156,7 @@ function SMODS.injectItems(...)
 			bclick(self, ...)
 		end
 
-		local bl_notallowed = SMODS.Blind {
+		bl_notallowed = SMODS.Blind {
 			key = "topuplib_notallowed",
 			atlas = "topuplib_testingcontent_blind",
 			pos = {x=0,y=2},

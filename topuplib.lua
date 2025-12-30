@@ -300,6 +300,7 @@ function create_UIBox_generic_options(arg, ...)
 end]]
 local mod = SMODS.current_mod
 local config = mod.config
+topuplib.preventcrash = config.crashpatches == 1
 
 mod.ui_config = {
 	colour = HEX("1A2635"), -- Color of the mod menu BG
@@ -407,6 +408,18 @@ mod.config_tab = function()
 			w = 9,
 			opt_callback = topuplib.addUniqueFunc(function(arg)
 				config.updater = arg.cycle_config.current_option
+			end)
+		}),
+		create_option_cycle({
+			label = "Crash Prevention Patches",
+			options = {"Yes", "No"},
+			info = {"Hacky patches to prevent crashes, but prone to causing bugs."},
+			current_option = config.updater,
+			colour = G.C.BLUE,
+			w = 9,
+			opt_callback = topuplib.addUniqueFunc(function(arg)
+				config.crashpatches = arg.cycle_config.current_option
+				topuplib.preventcrash = config.crashpatches == 1
 			end)
 		})
 	}}
