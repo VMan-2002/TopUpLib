@@ -159,6 +159,15 @@ do -- Misc
 		local modfolder = string.sub(modlol, string.find(modlol, "/"), nil)
 		return modfolder
 	end
+	--Gets localized key of an object of any type
+	topuplib.nameFromKey = function(key, fallback)
+		for _,grp in pairs(G.localization.descriptions) do
+			if grp[key] then
+				return grp[key].name
+			end
+		end
+		return fallback or key
+	end
 end
 do -- Text
 	--Adds predefined formatting to a single string
