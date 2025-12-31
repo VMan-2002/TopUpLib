@@ -63,9 +63,17 @@ pattern = '''--if pool is empty'''
 position = "after"
 payload = '''local _topuplib_new_pool_item = topuplib.createFallbackPoolItem(_type, _pool)
 if _pool_size == 0 and _topuplib_new_pool_item then
-	_pool_size = 1
 	_pool[#_pool + 1] = _topuplib_new_pool_item
-end'''
+else'''
+match_indent = true
+
+[[patches]]
+# Custom fallback pool items
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''return _pool, _pool_key..(not _legendary and G.GAME.round_resets.ante or '')'''
+position = "before"
+payload = '''end'''
 match_indent = true
 
 [[patches]]
@@ -100,3 +108,15 @@ pattern = '--Remove any existing overlays if there is one'
 position = "after"
 payload = "topuplib.music = nil"
 match_indent = true
+
+[[patches]]
+# Normal deck type with card changes
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''local _de = nil'''
+position = "after"
+payload = '''
+_de = _de or self.GAME.starting_params.topuplib_deck
+'''
+match_indent = true
+times = 1
