@@ -170,48 +170,40 @@ do -- Misc
 	end
 end
 do -- Text
-	--Adds predefined formatting to a single string
-	topuplib.formatString = function(text, f)
-		return topuplib.tforms[f]..text
-	end
-	--Adds predefined formatting and joins strings
-	topuplib.formatText = function(arr)
-		local result = ""
-		for k,v in pairs(arr) do
-			result = result .. topuplib.formatString(v[1] or "", v[2] or "r")
+	--cooler text format func.
+	--Used more like basegame text formatting
+	local asub_pat = "%{_A[^%}]+%}"
+	local psub_pat = "%#[^S]?SUB"
+	topuplib.asub = function(d)
+		local t = type(d)
+		--print("Asub call with "..t)
+		if t == "string" then
+			return string.gsub(d, asub_pat, function(match)
+				--print("Asub match: "..match)
+				local c = string.find(match, ":", 5)
+				local atype = string.sub(match, 5, c and (c-1) or -2)
+				local srcstring = G.localization.topuplib.asub[atype] or "{C:"..atype.."}#SUB{}"
+				local psub_s, psub_e = string.find(srcstring, psub_pat)
+				if not psub_s then return srcstring end
+				local aval = c and string.sub(match, c+1, -2) or G.localization.topuplib.asub_defaults[atype]
+				local subtype = string.sub(match, psub_s, psub_e)
+				--[[if subtype == "#PSUB" then
+					local valn = tonumber(aval)
+					if (valn and valn > 0) then
+						aval = G.localization.topuplib.positive_sign .. aval
+					end
+				end]]
+				return string.sub(srcstring, 1, psub_s - 1) .. aval .. string.sub(srcstring, psub_e + 1)
+			end)
 		end
-		return result
-	end
-	--this is cleaner but that doesn't make me not uncomfy when i am criticized like i am committing an actual crime
-	--[[topuplib.quickFormat = function(...)
-		local i, endb = 1
-		for k,v in ipairs(arg) do
-			
+		if t == "table" then
+			for k,v in pairs(d) do
+				d[k] = topuplib.asub(v)
+			end
+			return d
 		end
-	end]]
-	
-	--[[
-quickFormat = function(...)
-	local startb, endb = 1
-	local result = {...}
-	for k,v in ipairs(result) do
-	    --fuckmyass killme
-	    startb = 0
-	    while true do
-	        startb = v:find("{", startb + 1)
-	        if not i then
-	            print("aa")
-	            break
-	        end
-	        endb = v:find("}", startb)
-	        print(v:sub(startb, endb))
-	    end
+		return d
 	end
-	return unpack(result)
-end
-print("a")
-print(quickFormat("{chips}+25{} Chips"))
-	]]
 end
 do -- Object spawning
 	--Create and open a booster pack
@@ -293,6 +285,20 @@ do -- Internal use
 		local mesh = love.graphics.newMesh(result, "fan", "static")
 		mesh:setTexture(self.config.pixellated_rect_texture)
 		return mesh
+	end
+	--Deprecated
+	--Adds predefined formatting to a single string
+	topuplib.formatString = function(text, f)
+		return topuplib.tforms[f]..text
+	end
+	--Deprecated
+	--Adds predefined formatting and joins strings
+	topuplib.formatText = function(arr)
+		local result = ""
+		for k,v in pairs(arr) do
+			result = result .. topuplib.formatString(v[1] or "", v[2] or "r")
+		end
+		return result
 	end
 end
 
