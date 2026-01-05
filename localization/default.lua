@@ -59,6 +59,9 @@ return {
 			
 			money = "{C:money}$#SUB{}",
 			xmoney = "{X:money,C:white}$X#SUB{}",
+			emoney = "{X:money,C:white}$^#SUB{}",
+			eemoney = "{X:money,C:white}$^^#SUB{}",
+			eeemoney = "{X:money,C:white}$^^^#SUB{}",
 			
 			tarot = "{C:tarot}#SUB{}",
 			planet = "{C:planet}#SUB{}",
@@ -91,6 +94,9 @@ return {
 			currenteeemult = "{C:inactive}(Currently {X:dark_edition,C:white}^^^#SUB{C:inactive} Mult){}",
 			currentmoney = "{C:inactive}(Currently {C:money}$#SUB{C:inactive}){}",
 			currentxmoney = "{C:inactive}(Currently {X:money,C:white}$X#SUB{C:inactive}){}",
+			currentemoney = "{C:inactive}(Currently {X:money,C:white}$^#SUB{C:inactive}){}",
+			currenteemoney = "{C:inactive}(Currently {X:money,C:white}$^^#SUB{C:inactive}){}",
+			currenteeemoney = "{C:inactive}(Currently {X:money,C:white}$^^^#SUB{C:inactive}){}",
 		},
 		asub_defaults = {
 			tarot = "Tarot",

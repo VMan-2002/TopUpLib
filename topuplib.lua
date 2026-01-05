@@ -159,15 +159,6 @@ do -- Misc
 		local modfolder = string.sub(modlol, string.find(modlol, "/"), nil)
 		return modfolder
 	end
-	--Gets localized key of an object of any type
-	topuplib.nameFromKey = function(key, fallback)
-		for _,grp in pairs(G.localization.descriptions) do
-			if grp[key] then
-				return grp[key].name
-			end
-		end
-		return fallback or key
-	end
 end
 do -- Text
 	--cooler text format func.
@@ -203,6 +194,15 @@ do -- Text
 			return d
 		end
 		return d
+	end
+	--Gets localized key of an object of any type
+	topuplib.nameFromKey = function(key, fallback)
+		for _,grp in pairs(G.localization.descriptions) do
+			if grp[key] then
+				return grp[key].name
+			end
+		end
+		return fallback or key
 	end
 end
 do -- Object spawning
