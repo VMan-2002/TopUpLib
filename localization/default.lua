@@ -99,6 +99,11 @@ return {
 			currenteeemoney = "{C:inactive}(Currently {X:money,C:white}$^^^#SUB{C:inactive}){}",
 		},
 		asub_defaults = {
+			baremult = "Mult",
+			barechips = "Chips",
+			barexmult = "XMult",
+			barexchips = "XChips",
+			
 			tarot = "Tarot",
 			planet = "Planet",
 			spectral = "Spectral",
