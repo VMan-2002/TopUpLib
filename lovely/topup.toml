@@ -47,9 +47,9 @@ payload = '''if G.P_CENTERS[v.id] then'''
 match_indent = true
 
 [[patches]]
-[patches.pattern]
+[patches.regex]
 target = "functions/UI_definitions.lua"
-pattern = '''banned_card_area:emplace(card)'''
+pattern = '''banned_card_area:emplace\(card\)[\s\t\n\r]+end'''
 position = "after"
 payload = '''
 end'''
