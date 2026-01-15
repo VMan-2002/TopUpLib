@@ -54,7 +54,7 @@ topuplib.debug_item_keys = {
 	"v_antimatter",
 	"v_money_tree",
 	"v_paint_brush",
-	"bl_topuplib_infinit",
+	"bl_topuplib_infinit", --todo: Ctrl+3 on blinds in debug essentials doesnt spawn the blind?
 	"bl_topuplib_debuff",
 	"bl_topuplib_notallowed"
 }
