@@ -25,6 +25,7 @@ return {
 			stake = "Stakes",
 			vars = "Game Variables"
 		},
+		debug_centers = "Debug Essentials",
 		positive_sign = "+",
 		asub = {
 			--"#SUB": Inserts provided value here

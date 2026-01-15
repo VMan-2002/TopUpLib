@@ -37,6 +37,27 @@ topuplib.tforms = {
 }
 topuplib.pixellated_rect_options = {}
 topuplib.font_options = {}
+topuplib.debug_item_keys = {
+	"j_luchador",
+	"j_chicot",
+	"j_credit_card",
+	"j_pareidolia",
+	"j_shortcut",
+	"j_erosion",
+	"j_blueprint",
+	"j_invisible",
+	"j_topuplib_infinit",
+	"c_lovers",
+	"c_hanged_man",
+	"c_death",
+	"c_cryptid",
+	"v_antimatter",
+	"v_money_tree",
+	"v_paint_brush",
+	"bl_topuplib_infinit",
+	"bl_topuplib_debuff",
+	"bl_topuplib_notallowed"
+}
 do --Debugging
 	--`true` if the DebugPlus mod is installed and enabled
 	topuplib.debug = SMODS.Mods.DebugPlus and not SMODS.Mods.DebugPlus.disabled
@@ -96,6 +117,19 @@ do --Debugging
 			print("("..tostring(verts[i])..","..tostring(verts[i+1])..")")
 			i = i + 2
 		end
+	end
+	topuplib.addDebugCollectionItem = function(...)
+		for k,v in ipairs({...}) do
+			table.insert(topuplib.debug_item_keys, v)
+		end
+	end
+	--Override this function if your shit dont work
+	topuplib.debug_item_key_get = function(name)
+		if not name then return end
+		if string.sub(name, 1, 3) == "bl_" then
+			return G.P_BLINDS[name]
+		end
+		return G.P_CENTERS[name]
 	end
 end
 do -- Misc

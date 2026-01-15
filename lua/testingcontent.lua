@@ -1,3 +1,4 @@
+--Atlas
 SMODS.Atlas {
 	key = "testingcontent",
 	px = 71,
@@ -31,6 +32,77 @@ SMODS.Atlas {
 	frames = 21
 }
 
+--Collection lol
+if topuplib.debug then
+	local collection_ref = create_UIBox_your_collection
+	function create_UIBox_your_collection(...)
+		local ret = collection_ref(...)
+		G_tmp_lol = ret
+		table.insert(ret.nodes[1].nodes[1].nodes[1].nodes[2].nodes,
+			UIBox_button({button = 'your_collection_topuplib_debug', label = {G.localization.topuplib.debug_centers}, minw = 5, id = 'your_collection_topuplib_debug'}))
+		return ret
+	end
+
+	G.FUNCS.your_collection_topuplib_debug = function(e)
+		G.SETTINGS.paused = true
+		G.FUNCS.overlay_menu{
+			definition = create_UIBox_your_collection_topuplib_debug(),
+		}
+		G.FUNCS.your_collection_topuplib_debug_page({cycle_config = {current_option = 1}})
+	end
+	function create_UIBox_your_collection_topuplib_debug()
+		local deck_tables = {}
+
+		G.your_collection = {}
+		for j = 1, 3 do
+			G.your_collection[j] = CardArea(
+				G.ROOM.T.x + 0.2*G.ROOM.T.w/2,G.ROOM.T.h,
+				7*G.CARD_W,
+				0.95*G.CARD_H, 
+				{card_limit = 7, type = 'title', highlight_limit = 0, collection = true}
+			)
+			table.insert(deck_tables, 
+				{n=G.UIT.R, config={align = "cm", padding = 0.07, no_fill = true},
+				nodes={{n=G.UIT.O, config={object = G.your_collection[j]}}}
+			})
+		end
+
+		local joker_options = {}
+		for i = 1, math.ceil(#topuplib.debug_item_keys/(7*#G.your_collection)) do
+			table.insert(joker_options, localize('k_page')..' '..tostring(i)..'/'..tostring(math.ceil(#topuplib.debug_item_keys/(7*#G.your_collection))))
+		end
+		
+		local t = create_UIBox_generic_options({ back_func = 'your_collection', contents = {
+			{n=G.UIT.R, config={align = "cm", r = 0.1, colour = G.C.BLACK, emboss = 0.05}, nodes=deck_tables}, 
+			{n=G.UIT.R, config={align = "cm"}, nodes={
+				create_option_cycle({options = joker_options, w = 4.5, cycle_shoulders = true, opt_callback = 'your_collection_topuplib_debug_page', current_option = 1, colour = G.C.RED, no_pips = true, focus_args = {snap_to = true, nav = 'wide'}})
+			}}
+		}})
+		return t
+	end
+	G.FUNCS.your_collection_topuplib_debug_page = function(args)
+		if not args or not args.cycle_config then return end
+		for j = 1, #G.your_collection do
+			for i = #G.your_collection[j].cards,1, -1 do
+				local c = G.your_collection[j]:remove_card(G.your_collection[j].cards[i])
+				c:remove()
+				c = nil
+			end
+		end
+		for i = 1, 7 do
+			for j = 1, #G.your_collection do
+				local key = topuplib.debug_item_keys[i+(j-1)*7 + (7*#G.your_collection*(args.cycle_config.current_option - 1))]
+				if not key then break end
+				local center = topuplib.debug_item_key_get(key)
+				local card = Card(G.your_collection[j].T.x + G.your_collection[j].T.w/2, G.your_collection[j].T.y, G.CARD_W, G.CARD_H, nil, center)
+				card.bypass_discovery_center = true
+				G.your_collection[j]:emplace(card)
+			end
+		end
+	end
+end
+
+--Items
 local inject_ref = SMODS.injectItems
 function SMODS.injectItems(...)
 	local b_infinit = SMODS.Back {
@@ -223,6 +295,34 @@ function SMODS.injectItems(...)
 			--we manually make sure the origin mod is correctly set
 			v.mod = SMODS.Mods.TopUpLib
 			v.original_mod = SMODS.Mods.TopUpLib
+		end
+	end
+	
+	do --Add other mod's things to Debug Essentials
+		local existadds = {
+			"j_cry_Double Scale", --what?
+			"j_cry_maximized",
+			"j_cry_kidnap",
+			"j_cry_oldcandy",
+			"j_cry_panopticon",
+			"j_cry_sync_catalyst",
+			"j_cry_maze",
+			"j_cry_altgoogol",
+			"j_cry_error",
+			"j_cry_fractal",
+			"j_cry_tropical_smoothie",
+			"j_cry_oil_lamp",
+			"j_cry_digitalhallucinations",
+			"j_cry_demicolon",
+			"j_cry_scalae",
+			"j_cry_effarcire",
+			"j_cry_tenebris",
+			"j_cry_crustulum"
+		}
+		for k,v in pairs(existadds) do
+			if SMODS.Centers[v] then
+				table.insert(topuplib.debug_item_keys, v)
+			end
 		end
 	end
 	
