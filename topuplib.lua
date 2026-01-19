@@ -298,6 +298,12 @@ do -- Cards
 	topuplib.allIsSameSuit = function(cards, suit)
 		
 	end
+	--True if the card instance is in the collection menu.
+	topuplib.viewedFromCollection = function(card)
+		for _,v in pairs(G.your_collection) do
+			if v == card.area then return true end
+		end
+	end
 end
 do -- Internal use
 	-- Don't mess with these functions unless you know what you're doing
