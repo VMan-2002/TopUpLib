@@ -98,6 +98,17 @@ return {
 			currentemoney = "{C:inactive}(Currently {X:money,C:white}$^#SUB{C:inactive}){}",
 			currenteemoney = "{C:inactive}(Currently {X:money,C:white}$^^#SUB{C:inactive}){}",
 			currenteeemoney = "{C:inactive}(Currently {X:money,C:white}$^^^#SUB{C:inactive}){}",
+			
+			bs_red = "{X:red,C:white}#SUB{}",
+			bs_green = "{X:green,C:white}#SUB{}",
+			bs_blue = "{X:blue,C:white}#SUB{}",
+			bs_yellow = "{X:money,C:white}#SUB{}",
+			bs_purple = "{X:purple,C:white}#SUB{}",
+			bs_faded = "{X:dark_edition,C:white}#SUB{}",
+			bs_channel = "{C:bld_obj_filmcard}#SUB{}",
+			bs_mineral = "{C:bld_obj_mineral}#SUB{}",
+			bs_rune = "{C:bld_obj_rune}#SUB{}",
+			bs_ritual = "{C:bld_obj_ritual}#SUB{}",
 		},
 		asub_defaults = {
 			baremult = "Mult",
@@ -124,6 +135,17 @@ return {
 			legendary = "Legendary",
 			epic = "Epic",
 			exotic = "Exotic",
+			
+			bs_red = "Red",
+			bs_green = "Green",
+			bs_blue = "Blue",
+			bs_yellow = "Yellow",
+			bs_purple = "Purple",
+			bs_faded = "Faded",
+			bs_channel = "Channel",
+			bs_mineral = "Mineral",
+			bs_rune = "Rune",
+			bs_ritual = "Ritual",
 		}
 	},
 	descriptions = {
