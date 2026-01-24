@@ -120,3 +120,73 @@ _de = _de or self.GAME.starting_params.topuplib_deck
 '''
 match_indent = true
 times = 1
+
+[[patches]]
+# Dynamic Localize hook
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "if ret_string then return ret_string end"
+position = "after"
+payload = '''
+	if topuplib and loc_target then
+		local repl = topuplib.localizeHook(args, loc_target, misc_cat)
+		if repl then
+			local r = {}
+			for k,v in pairs(loc_target) do
+				r[k] = repl[k] or v
+			end
+			print("rep")
+			loc_target = topuplib.localizeModifiedParse(r)
+			print(r.name_parsed)
+		end
+	end
+'''
+match_indent = true
+
+#[[patches]]
+## loc_target fail debug log
+#[patches.pattern]
+#pattern = "if not loc_target then return 'ERROR' end"
+#position = "at"
+#payload = '''if not loc_target then
+#	if topuplib.debug then
+#		print('[TopUpLib] loc_target fail')
+#		print(args, misc_cat)
+#	end
+#	return 'ERROR'
+#end'''
+#target = "functions/misc_functions.lua"
+#match_indent = true
+
+[[patches]]
+[patches.pattern]
+pattern = "full_UI_table.name = localize{type = 'name', set = _c.set, key = _c.key, nodes = full_UI_table.name}"
+position="before"
+payload = '''--print("LOL", _c.set, _c.key)'''
+match_indent=true
+target = "functions/common_events.lua"
+
+[[patches]]
+# Test
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'for _, v in ipairs(info_queue) do'
+position = "before"
+payload = '''--print("LOL2", _c.set, _c.key)'''
+match_indent = true
+
+[[patches]]
+# Test
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''local cfg = (card and card.ability) or _c['config']'''
+position = "before"
+payload = '''if _c.set == "TopUpLib_Music" then
+	if topuplib.localize("descriptions", "TopUpLib_Music")[_c.key] then
+		localize{type = 'descriptions', key = _c.key, set = "TopUpLib_Music", nodes = desc_nodes, vars = {_c.key}}
+	else
+		localize{type = 'descriptions', key = "collectionfallback", set = "TopUpLib_Music", nodes = desc_nodes, vars = {_c.key}}
+	end
+	badges.card_type = nil
+end'''
+match_indent = true

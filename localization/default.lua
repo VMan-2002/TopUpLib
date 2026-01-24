@@ -2,12 +2,6 @@ return {
 	topuplib = {
 		collection_menus = {
 			music = "Music",
-			back = "Decks",
-			booster = "Booster Packs",
-			consumable = "Consumables",
-			edition = "Editions",
-			enhancement = "Enhancements",
-			joker = "Jokers",
 			achievement = "Achievements",
 			atlas = "Atlases",
 			challenge = "Challenges",
@@ -17,7 +11,6 @@ return {
 			keybind = "Keybinds",
 			language = "Languages",
 			objecttype = "Object Types",
-			pokerhand = "Poker Hands",
 			rank = "Card Ranks",
 			suit = "Card Suits",
 			rarity = "Rarities",
@@ -148,6 +141,11 @@ return {
 			bs_ritual = "Ritual",
 		}
 	},
+	misc = {
+		dictionary = {
+			--b_TopUpLib_Music = "Music" --what
+		}
+	},
 	descriptions = {
 		Back = {
 			b_topuplib_infinit = {
@@ -163,7 +161,9 @@ return {
 		Joker = {
 			j_topuplib_infinit = {
 				name = "Top Joker",
-				text = {"+#1# {C:mult}Mult{} and {C:chips}Chips{}"}
+				text = {
+					{"+#1# {C:mult}Mult{} and {C:chips}Chips{}"}
+				}
 			}
 		},
         Sleeve = {
@@ -223,6 +223,140 @@ return {
 			pnr_topuplib_infinit_mult = {
 				name = "Finn",
 				text = {"+#1# {C:mult}Mult{} and {C:chips}Chips{}"}
+			}
+		},
+		TopUpLib_Music = {
+			collectionfallback = {
+				text = {
+					"Key: #1#"
+				}
+			},
+			music1 = {
+				name = "Main Theme",
+				text = {
+					"Balatro main theme",
+					"By Luis Clemente"
+				},
+				center = "j_joker",
+				order = 1
+			},
+			music2 = {
+				name = "Arcana Pack",
+				text = {
+					"Selecting from",
+					"an {C:tarot}Arcana{} Pack",
+					"By Luis Clemente"
+				},
+				center = "p_arcana_normal_1",
+				order = 2
+			},
+			music3 = {
+				name = "Celestial Pack",
+				text = {
+					"Selecting from",
+					"a {C:planet}Celestial Pack",
+					"By Luis Clemente"
+				},
+				center = "p_celestial_normal_3",
+				order = 3
+			},
+			music4 = {
+				name = "Shop",
+				text = {
+					"In the {C:attention}Shop",
+					"By Luis Clemente"
+				},
+				center = "v_clearance_sale",
+				order = 4
+			},
+			music5 = {
+				name = "Boss Blind",
+				text = {
+					"In battle against",
+					"a {C:attention}Boss Blind",
+					"By Luis Clemente"
+				},
+				center = "j_matador",
+				order = 5
+			},
+			cry_music_jimball = {
+				name = "Funkytown",
+				text = {
+					"Holding Jimball",
+					"{C:dark_edition}Copyrighted{}",
+					"By Lipps Inc."
+				},
+				center = "j_cry_jimball",
+				order = 1
+			},
+			cry_music_code = {
+				name = "://LETS_BREAK_THE_GAME",
+				text = {
+					"Selecting from",
+					"a {C:cry_code}Program Pack",
+					"By HexaCryonic"
+				},
+				center = "p_cry_code_normal_1",
+				order = 2
+			},
+			cry_music_exotic = {
+				name = "Joker in Latin",
+				text = {
+					"Holding an",
+					"{C:cry_exotic}Exotic{} Joker",
+					"By AlexZGreat"
+				},
+				center = "j_cry_iterum",
+				order = 3
+			},
+			cry_music_big = {
+				name = "Final Boss (For Your Computer)",
+				text = {
+					"After a hand has",
+					"scored {C:attention}over 1e1000000",
+					"By AlexZGreat"
+				},
+				center = "j_cry_exponentia",
+				order = 4
+			},
+			cry_music_modest = {
+				name = "Modest",
+				text = {
+					"On the main menu, with",
+					"the {C:green}Modest{} gameset",
+					"By MathIsFun_"
+				},
+				center = "j_jolly",
+				order = 5
+			},
+			cry_music_mainline = {
+				name = "Mainline",
+				text = {
+					"On the main menu, with",
+					"the {C:red}Mainline{} gameset",
+					"By MathIsFun_"
+				},
+				center = "j_cry_fuckedup",
+				order = 6
+			},
+			cry_music_madness = {
+				name = "Madness",
+				text = {
+					"On the main menu, with",
+					"the {C:cry_exotic}Madness{} gameset",
+					"By MathIsFun_"
+				},
+				center = "j_cry_words_cant_even",
+				order = 7
+			},
+			bunc_music_virtual = {
+				name = "Virtual Pack",
+				text = {
+					"Selecting from a",
+					"Virtual Pack",
+					"By (unknown)"
+				},
+				center = "p_bunc_virtual_1"
 			}
 		}
 	}

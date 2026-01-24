@@ -238,6 +238,25 @@ do -- Text
 		end
 		return fallback or key
 	end
+	--Patch this function to modify localization dynamically
+	topuplib.localizeHook = function(args, loc_target, misc_cat) end
+	--Parses modified localization from the previous function. You may need to patch this if you have custom data that's not supported
+	topuplib.localizeModifiedParse = function(r)
+		if r.name then
+			r.name_parsed = loc_parse_string(r.name)
+		end
+		if r.text then
+			r.text_parsed = {}
+			for k,v in pairs(r.text) do
+				r.text_parsed[k] = loc_parse_string(v)
+			end
+		end
+		return r
+	end
+	--Returns named table in localization file
+	topuplib.localize = function(tbl, name)
+		return name and G.localization[tbl][name] or G.localization[tbl]
+	end
 end
 do -- Object spawning
 	--Create and open a booster pack
@@ -329,11 +348,13 @@ do -- Internal use
 	--Deprecated
 	--Adds predefined formatting to a single string
 	topuplib.formatString = function(text, f)
+		print("[TopUpLib] Use of deprecated topuplib.formatString !!")
 		return topuplib.tforms[f]..text
 	end
 	--Deprecated
 	--Adds predefined formatting and joins strings
 	topuplib.formatText = function(arr)
+		print("[TopUpLib] Use of deprecated topuplib.formatText !!")
 		local result = ""
 		for k,v in pairs(arr) do
 			result = result .. topuplib.formatString(v[1] or "", v[2] or "r")
@@ -356,6 +377,7 @@ end]]
 local mod = SMODS.current_mod
 local config = mod.config
 topuplib.preventcrash = config.crashpatches == 1
+topuplib.debugdescription = config.debugdescription == 1
 
 mod.ui_config = {
 	colour = HEX("1A2635"), -- Color of the mod menu BG
@@ -476,7 +498,24 @@ mod.config_tab = function()
 				config.crashpatches = arg.cycle_config.current_option
 				topuplib.preventcrash = config.crashpatches == 1
 			end)
-		})
+		}),
+		--[[create_option_cycle({
+			label = "Debug Descriptions",
+			options = {"Yes", "No"},
+			info = {"Show internal data on items. WIP, can crash on some types. Requires DebugPlus enabled."},
+			current_option = config.debugdescription or 2,
+			colour = G.C.BLUE,
+			w = 9,
+			opt_callback = topuplib.addUniqueFunc(function(arg)
+				config.debugdescription = arg.cycle_config.current_option
+				topuplib.debugdescription = config.debugdescription == 1
+			end)
+		})]]
+	}}
+end
+SMODS.current_mod.custom_collection_tabs = function()
+	return { UIBox_button {
+		button = 'your_collection_topuplib_music', label = {topuplib.localize('topuplib', "collection_menus").music}, minw = 5, id = 'your_collection_topuplib_music'
 	}}
 end
 
@@ -492,6 +531,7 @@ end
 local rq = {
 	"updater",
 	"patches",
+	"registrymenu",
 	(topuplib.debug or Cryptid) and "testingcontent"
 }
 

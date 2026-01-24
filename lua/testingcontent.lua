@@ -326,5 +326,23 @@ function SMODS.injectItems(...)
 		end
 	end
 	
+	--[[local localize_ref = topuplib.localizeHook
+	topuplib.localizeHook = function(args, loc_target, misc_cat, ...)
+		if not topuplib.debugdescriptions then return localize_ref(args, loc_target, misc_cat, ...) end
+		local ret = localize_ref(args, loc_target, misc_cat, ...) or {}
+		if loc_target.text then
+			ret.text = ret.text or topuplib.tableShallowCopy(loc_target.text)
+			local toaddto = ret.text
+			if type(ret.text[1]) == "table" then
+				ret.text[1] = topuplib.tableShallowCopy(ret.text[1])
+				toaddto = ret.text[1]
+				return ret
+			end
+			table.insert(toaddto, "{C:inactive}Key: "..args.key)
+			print(ret.text)
+		end
+		return ret
+	end]]
+	
 	inject_ref(...)
 end
