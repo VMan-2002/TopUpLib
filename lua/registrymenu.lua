@@ -13,7 +13,7 @@ topuplib.registryMenuAddEntry = function(tbl, dat)
 	local c = loc and G.P_CENTERS[loc.center] or G.P_CENTERS.j_joker
 	dat.mod = dat.mod or c_mod
 	
-	if dat.key ~= "undiscovered" then
+	if dat.key ~= "undiscovered" and loc then
 		if not (topuplib.isDiscovered(c_set, dat.key) or dat.discovered or loc.discovered) then
 			return topuplib.registryMenuAddEntry(tbl, {
 				key = "undiscovered",
