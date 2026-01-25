@@ -193,6 +193,19 @@ do -- Misc
 		local modfolder = string.sub(modlol, string.find(modlol, "/"), nil)
 		return modfolder
 	end
+	--Checks for discovered custom non-gameobject.
+	topuplib.isDiscovered = function(set, key)
+		local d = G.PROFILES[G.SETTINGS.profile].topuplib_discovered
+		return d and d[set] and d[set][key]
+	end
+	--Mark a custom non-gameobject as discovered.
+	--Todo: add option to save profile.
+	topuplib.markDiscovered = function(set, key)
+		local d = G.PROFILES[G.SETTINGS.profile].topuplib_discovered or {}
+		if not d[set] then d[set] = {} end
+		d[set][key] = true
+		G.PROFILES[G.SETTINGS.profile].topuplib_discovered = d
+	end
 end
 do -- Text
 	--cooler text format func.
@@ -378,6 +391,13 @@ local mod = SMODS.current_mod
 local config = mod.config
 topuplib.preventcrash = config.crashpatches == 1
 topuplib.debugdescription = config.debugdescription == 1
+
+SMODS.Atlas{
+	key = "common",
+	px = 71,
+	py = 95,
+	path = "common.png"
+}
 
 mod.ui_config = {
 	colour = HEX("1A2635"), -- Color of the mod menu BG

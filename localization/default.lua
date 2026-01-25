@@ -231,6 +231,16 @@ return {
 					"Key: #1#"
 				}
 			},
+			undiscovered = {
+				name = "Not Discovered",
+				text = {
+					"Find this music track",
+					"to view it's information"
+				},
+				atlas = "topuplib_common",
+				pos = {x=1,y=0},
+				soul_pos = {x=0,y=0}
+			},
 			music1 = {
 				name = "Main Theme",
 				text = {
@@ -357,6 +367,66 @@ return {
 					"By (unknown)"
 				},
 				center = "p_bunc_virtual_1"
+			},
+			stocking_music_under_the_tree = {
+				name = "Christmas Spirit",
+				text = {
+					"Selecting a {C:green}Present",
+					"from {C:green}under the Tree",
+					"By ThunderEdge73"
+				},
+				center = "Santa Claus_stocking_present",
+				order = 1
+			},
+			stocking_music_silksong = {
+				name = "Balatro Christmas Drip Music",
+				text = {
+					"While {C:important}McJimbo's Grinch",
+					"{C:important}Socks{} is active",
+					"By (unknown)"
+				},
+				center = "ProdByProto_stocking_grinch_socks",
+				order = 3
+			},
+			stocking_music_list1 = {
+				name = "Relaxing Playlist (1)",
+				text = {
+					"A possible track to play",
+					"when using {C:important}Relaxing Playlist{}",
+					"By ProdByProto"
+				},
+				center = "ProdByProto_stocking_list",
+				order = 4
+			},
+			stocking_music_list2 = {
+				name = "Relaxing Playlist (2)",
+				text = {
+					"A possible track to play",
+					"when using {C:important}Relaxing Playlist{}",
+					"By ProdByProto"
+				},
+				center = "ProdByProto_stocking_list",
+				order = 5
+			},
+			stocking_music_list3 = {
+				name = "Relaxing Playlist (3)",
+				text = {
+					"A possible track to play",
+					"when using {C:important}Relaxing Playlist{}",
+					"By ProdByProto"
+				},
+				center = "ProdByProto_stocking_list",
+				order = 6
+			},
+			stocking_music_alibi_christmas = {
+				name = "Christmas Card",
+				text = {
+					"While using",
+					"Christmas Card",
+					"By (unknown)"
+				},
+				center = "Edward Robinson_stocking_christmas_card",
+				order = 7
 			}
 		}
 	}

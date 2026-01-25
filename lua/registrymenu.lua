@@ -9,9 +9,20 @@ topuplib.registryMenuAddEntry = function(tbl, dat)
 		return
 	end
 	if dat.no_collection then return end
-	local loc = topuplib.localize("descriptions", "TopUpLib_Music")[dat.key]
+	local loc = topuplib.localize("descriptions", c_set)[dat.key]
 	local c = loc and G.P_CENTERS[loc.center] or G.P_CENTERS.j_joker
 	dat.mod = dat.mod or c_mod
+	
+	if dat.key ~= "undiscovered" then
+		if not (topuplib.isDiscovered(c_set, dat.key) or dat.discovered or loc.discovered) then
+			return topuplib.registryMenuAddEntry(tbl, {
+				key = "undiscovered",
+				mod = dat.mod,
+				order = dat.order or loc and loc.order or dat.collection_order
+			})
+		end
+	end
+	
 	table.insert(tbl, {
 		unlocked = true,
 		set = c_set,
@@ -22,9 +33,10 @@ topuplib.registryMenuAddEntry = function(tbl, dat)
 		atlas = loc and loc.atlas or dat.collection_atlas or c.atlas or c.set or "Joker",
 		pos = loc and loc.pos or dat.collection_pos or c.pos or {x=0,y=0},
 		soul_pos = loc and loc.soul_pos or dat.collection_soul_pos or c.soul_pos,
-		mod = dat.mod,
-		original_mod = dat.original_mod or dat.mod,
-		_order = loc and loc.order or dat.collection_order or math.huge,
+		mod = dat.key ~= "undiscovered" and (dat.mod),
+		original_mod = dat.key ~= "undiscovered" and (dat.original_mod or dat.mod),
+		_order_mod = dat.original_mod or dat.mod,
+		_order = dat.order or loc and loc.order or dat.collection_order or math.huge,
 		pixel_size = loc and loc.pixel_size or dat.collection_pixel_size or c.pixel_size,
 		config = {}
 	})
@@ -44,7 +56,8 @@ create_UIBox_your_collection_topuplib_music = function()
 	for k = 1,5 do
 		topuplib.registryMenuAddEntry(collect, {
 			from = "Balatro",
-			key = "music"..k
+			key = "music"..k,
+			discovered = true
 		})
 	end
 	for k,v in pairs(SMODS.Sounds) do
@@ -60,6 +73,7 @@ create_UIBox_your_collection_topuplib_music = function()
 				collection_soul_pos = v.collection_soul_pos,
 				collection_order = v.collection_order,
 				collection_pixel_size = v.collection_pixel_size,
+				discovered = v.discovered
 			})
 		end
 	end
@@ -70,14 +84,17 @@ create_UIBox_your_collection_topuplib_music = function()
 		end
 	end
 	table.sort(collect, function(a, b)
-		if b.mod then
-			if not a.mod then return true end
-			if b.mod ~= a.mod then return b.mod.id > a.mod.id end
-		elseif a.mod then
+		if b.order_mod then
+			if not a._order_mod then return true end
+			if b._order_mod ~= a._order_mod then return b._order_mod.id > a._order_mod.id end
+		elseif a._order_mod then
 			return false
+		elseif a._order == b._order then
+			return a.key < b.key
 		end
 		return a._order < b._order
 	end)
+	G_t_collect = collect
     return SMODS.card_collection_UIBox(collect, {5,5}, {
         snap_back = true,
         h_mod = 1.03,
@@ -85,4 +102,14 @@ create_UIBox_your_collection_topuplib_music = function()
         collapse_single_page = true,
 		back_func = "your_collection_other_gameobjects"
     })
+end
+
+local modulate_sound_ref = modulate_sound
+local last_mus
+function modulate_sound(...)
+	modulate_sound_ref(...)
+	if last_mus ~= G.ARGS.push.desired_track then
+		last_mus = G.ARGS.push.desired_track
+		topuplib.markDiscovered("TopUpLib_Music", last_mus)
+	end
 end
