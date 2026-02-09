@@ -190,8 +190,14 @@ do -- Misc
 	topuplib.modFolderName = function(name)
 		local modlol = (name and SMODS.Mods[name] or SMODS.current_mod).path
 		if not modlol then return nil end
-		local modfolder = string.sub(modlol, string.find(modlol, "/"), nil)
-		return modfolder
+		local i = #modlol
+		while i ~= 0 do
+			i = i - 1
+			if string.sub(modlol, i, i) == "/" then
+				local modfolder = string.sub(modlol, i, nil)
+				return modfolder
+			end
+		end
 	end
 	--Checks for discovered custom non-gameobject.
 	topuplib.isDiscovered = function(set, key)
