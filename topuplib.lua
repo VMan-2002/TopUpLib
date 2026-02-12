@@ -281,7 +281,7 @@ do -- Text
 	end
 	--Returns named table in localization file
 	topuplib.localize = function(tbl, name)
-		return name and G.localization[tbl][name] or G.localization[tbl]
+		return name and G.localization[tbl][name] or G.localization[tbl or "topuplib"]
 	end
 end
 do -- Object spawning

@@ -140,7 +140,9 @@ return {
 			bs_mineral = "Mineral",
 			bs_rune = "Rune",
 			bs_ritual = "Ritual",
-		}
+		},
+		active = "Active",
+		inactive = "Inactive"
 	},
 	misc = {
 		dictionary = {
