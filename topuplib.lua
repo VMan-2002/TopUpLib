@@ -213,7 +213,7 @@ do -- Misc
 		G.PROFILES[G.SETTINGS.profile].topuplib_discovered = d
 	end
 	--Gets index of a value in a table
-	topuplib.getValueIndex(tbl, val, fallback)
+	topuplib.getValueIndex = function(tbl, val, fallback)
 		for k,v in pairs(tbl) do
 			if v == val then return k end
 		end
