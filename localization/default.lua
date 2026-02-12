@@ -63,6 +63,7 @@ return {
 			code = "{C:cry_code}#SUB{}",
 			
 			chance = "{C:green}#SUB{}",
+			small = "{C:inactive,s:0.7}#SUB{}",
 			
 			musthaveroom = "{C:inactive}(Must have room){}",
 			handsize = "{C:attention}#SUB{} hand size",
@@ -254,7 +255,7 @@ return {
 				name = "Arcana Pack",
 				text = {
 					"Selecting from",
-					"an {C:tarot}Arcana{} Pack",
+					"an {C:tarot}Arcana Pack",
 					"By Luis Clemente"
 				},
 				center = "p_arcana_normal_1",
