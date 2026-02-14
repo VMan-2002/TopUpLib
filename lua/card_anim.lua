@@ -1,11 +1,29 @@
 topuplib.cardAnimations = {}
 
-local animgameupdate = function() end
-
 local updateref = Game.update
 function Game.update(...)
 	local a = updateref(...)
-	animgameupdate()
+	local dt = love.timer.getDelta()
+	for i,tc in pairs(topuplib.cardAnimations) do
+		tc[2] = tc[2] + dt
+		if tc[2] >= tc[1] then
+			tc[2] = tc[2] - tc[1]
+			for key,anm in pairs(tc[3]) do
+				local center = G.P_CENTERS[key]
+				anm.frameNum = anm.frameNum + 1
+				if anm.frameNum == anm.frameCount then
+					anm.frameNum = 0
+				end
+				anm.runFunc(center, anm)
+				--TODO: this may not be snail speed but it could be more optimal
+				for k,v in pairs(G.I.CARD) do
+					if v.config.center_key == key then
+						v:topuplib_update_anim(center, anm)
+					end
+				end
+			end
+		end
+	end
 	return a
 end
 
@@ -45,30 +63,6 @@ function SMODS.injectItems(...)
 				anm.runFunc = topuplib.cardAnimation_framebased
 			elseif anm.vars then
 				anm.runFunc = topuplib.cardAnimation_varbased
-			end
-		end
-	end
-	
-	animgameupdate = function()
-		local dt = love.timer.getDelta()
-		for i,tc in pairs(topuplib.cardAnimations) do
-			tc[2] = tc[2] + dt
-			if tc[2] >= tc[1] then
-				tc[2] = tc[2] - tc[1]
-				for key,anm in pairs(tc[3]) do
-					local center = G.P_CENTERS[key]
-					anm.frameNum = anm.frameNum + 1
-					if anm.frameNum == anm.frameCount then
-						anm.frameNum = 0
-					end
-					anm.runFunc(center, anm)
-					--TODO: this may not be snail speed but it could be more optimal
-					for k,v in pairs(G.I.CARD) do
-						if v.config.center_key == key then
-							v:topuplib_update_anim(center, anm)
-						end
-					end
-				end
 			end
 		end
 	end
