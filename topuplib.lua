@@ -565,6 +565,7 @@ local rq = {
 	"updater",
 	"patches",
 	"registrymenu",
+	"card_anim",
 	(topuplib.debug or Cryptid) and "testingcontent"
 }
 
