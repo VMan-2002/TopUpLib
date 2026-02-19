@@ -71,7 +71,7 @@ if (card) and topuplib.viewedFromCollection(card) then
 		local stakecount = topuplib.countKeys(G.P_STAKES)
 		local stakewincount = topuplib.countKeys(usage.wins_by_key)
 		stats_center = {set = "Other", key = tie ~= 0 and "topuplib_joker_usage_tied" or "topuplib_joker_usage", specific_vars = {usage.count, r, rt, tie, stakewincount, stakecount}}
-		if stakecount > stakewincount then
+		if stakecount > stakewincount and stakewincount ~= 0 then
 			local ws = 0
 			local us
 			local hus
