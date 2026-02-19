@@ -74,14 +74,17 @@ if (card) and topuplib.viewedFromCollection(card) then
 		if stakecount > stakewincount then
 			local ws = 0
 			local us
+			local hus
 			stats_center.key = stats_center.key .. "_stake"
 			for k,v in ipairs(G.P_CENTER_POOLS.Stake) do
 				if not usage.wins_by_key[v.key] then
-					us = us or topuplib.localizeDesc("Stake", v.key).name
+					hus = topuplib.localizeDesc("Stake", v.key).name
+					us = us or hus
 				else
 					ws = ws + 1
 					if ws == stakewincount then
-						stats_center.specific_vars[8] = topuplib.localizeDesc("Stake", G.P_CENTER_POOLS.Stake[k + 1].key).name
+						local higher = topuplib.localizeDesc("Stake", G.P_CENTER_POOLS.Stake[k + 1].key)
+						stats_center.specific_vars[8] = (higher or hus).name
 						stats_center.specific_vars[7] = us or stats_center.specific_vars[8]
 						break
 					end
