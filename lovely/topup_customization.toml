@@ -83,8 +83,7 @@ if (card) and topuplib.viewedFromCollection(card) then
 				else
 					ws = ws + 1
 					if ws == stakewincount then
-						local higher = topuplib.localizeDesc("Stake", G.P_CENTER_POOLS.Stake[k + 1].key)
-						stats_center.specific_vars[8] = (higher or hus).name
+						stats_center.specific_vars[8] = G.P_CENTER_POOLS.Stake[k + 1] and topuplib.localizeDesc("Stake", G.P_CENTER_POOLS.Stake[k + 1].key).name or hus
 						stats_center.specific_vars[7] = us or stats_center.specific_vars[8]
 						break
 					end
