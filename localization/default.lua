@@ -431,6 +431,76 @@ return {
 				center = "Edward Robinson_stocking_christmas_card",
 				order = 7
 			}
+		},
+		Other = {
+			topuplib_usage = {
+				name = "Stats",
+				text = {
+					"Used this #5# {C:attention}#1#{} times",
+					"Top {C:attention}#2#/#3#"
+				}
+			},
+			topuplib_usage_tied = {
+				name = "Stats",
+				text = {
+					"Used this #5# {C:attention}#1#{} times",
+					"Top {C:attention}#2#/#3#",
+					"{C:inactive}Tied with #4# others"
+				}
+			},
+			topuplib_joker_usage = {
+				name = "Stats",
+				text = {
+					"Completed {C:attention}#1#{} rounds with this Joker",
+					"Top {C:attention}#2#/#3#",
+					"Won on {C:attention}#5#/#6#{} Stakes"
+				}
+			},
+			topuplib_joker_usage_tied = {
+				name = "Stats",
+				text = {
+					"Completed {C:attention}#1#{} rounds with this Joker",
+					"Top {C:attention}#2#/#3#",
+					"Won on {C:attention}#5#/#6#{} Stakes",
+					"{C:inactive}Tied with #4# others"
+				}
+			},
+			topuplib_joker_usage_stake = {
+				name = "Stats",
+				text = {
+					"Completed {C:attention}#1#{} rounds with this Joker",
+					"Top {C:attention}#2#/#3#",
+					"Won on {C:attention}#5#/#6#{} Stakes",
+					"Next Uncompleted Stake: {C:attention}#7#",
+					"Next Higher Stake: {C:attention}#8#"
+				}
+			},
+			topuplib_joker_usage_tied_stake = {
+				name = "Stats",
+				text = {
+					"Completed {C:attention}#1#{} rounds with this Joker",
+					"Top {C:attention}#2#/#3#",
+					"{C:inactive}Tied with #4# others",
+					"Won on {C:attention}#5#/#6#{} Stakes",
+					"Next Uncompleted Stake: {C:attention}#7#",
+					"Next Higher Stake: {C:attention}#8#"
+				}
+			},
+			topuplib_voucher_usage = {
+				name = "Stats",
+				text = {
+					"Redeemed this Voucher {C:attention}#1#{} times",
+					"Top {C:attention}#2#/#3#"
+				}
+			},
+			topuplib_voucher_usage_tied = {
+				name = "Stats",
+				text = {
+					"Redeemed this Voucher {C:attention}#1#{} times",
+					"Top {C:attention}#2#/#3#",
+					"{C:inactive}Tied with #4# others"
+				}
+			}
 		}
 	}
 }

@@ -53,3 +53,54 @@ love.filesystem.remove('font_replacement.ttf')'''
 position = "after"
 payload = ''' end'''
 match_indent = true
+
+[[patches]]
+# Stats in collection
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'for _, v in ipairs(info_queue) do'
+position = "before"
+payload = '''
+if (card) and topuplib.viewedFromCollection(card) then
+	local p = G.PROFILES[G.SETTINGS.profile]
+	local stats_center
+	if card.config.center.set == "Joker" then
+		local usage = p.joker_usage[card.config.center_key]
+		if not usage then goto topuplib_stats_info_skip end
+		local r, rt, tie = topuplib.statsRanking(p.joker_usage, card.config.center_key, "Joker")
+		local stakecount = topuplib.countKeys(G.P_STAKES)
+		local stakewincount = topuplib.countKeys(usage.wins_by_key)
+		stats_center = {set = "Other", key = tie ~= 0 and "topuplib_joker_usage_tied" or "topuplib_joker_usage", specific_vars = {usage.count, r, rt, tie, stakewincount, stakecount}}
+		if stakecount > stakewincount then
+			local ws = 0
+			local us
+			stats_center.key = stats_center.key .. "_stake"
+			for k,v in ipairs(G.P_CENTER_POOLS.Stake) do
+				if not usage.wins_by_key[v.key] then
+					us = us or topuplib.localizeDesc("Stake", v.key).name
+				else
+					ws = ws + 1
+					if ws == stakewincount then
+						stats_center.specific_vars[8] = topuplib.localizeDesc("Stake", G.P_CENTER_POOLS.Stake[k + 1].key).name
+						stats_center.specific_vars[7] = us or stats_center.specific_vars[8]
+						break
+					end
+				end
+			end
+		end
+	elseif card.config.center.set == "Voucher" then
+		local usage = p.voucher_usage[card.config.center_key]
+		if not usage then goto topuplib_stats_info_skip end
+		local r, rt, tie = topuplib.statsRanking(p.voucher_usage, card.config.center_key, "Voucher")
+		stats_center = {set = "Other", key = tie ~= 0 and "topuplib_voucher_usage_tied" or "topuplib_voucher_usage", specific_vars = {usage.count, r, rt, tie}}
+	else
+		local usage = p.consumeable_usage[card.config.center_key]
+		if not usage then goto topuplib_stats_info_skip end
+		local r, rt, tie = topuplib.statsRanking(p.consumeable_usage, card.config.center_key, card.config.center.set)
+		stats_center = {set = "Other", key = tie ~= 0 and "topuplib_usage_tied" or "topuplib_usage", specific_vars = {usage.count, r, rt, tie, card.config.center.set}}
+	end
+	info_queue[#info_queue+1] = stats_center
+	::topuplib_stats_info_skip::
+end
+'''
+match_indent = true

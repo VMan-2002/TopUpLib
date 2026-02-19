@@ -219,6 +219,14 @@ do -- Misc
 		end
 		return fallback
 	end
+	--Count entries in a table
+	topuplib.countKeys = function(tbl)
+		local r = 0
+		for k,v in pairs(tbl) do
+			r = r + 1
+		end
+		return r
+	end
 end
 do -- Text
 	--cooler text format func.
@@ -263,6 +271,9 @@ do -- Text
 			end
 		end
 		return fallback or key
+	end
+	topuplib.localizeDesc = function(grp, key)
+		return G.localization.descriptions[grp][key]
 	end
 	--Patch this function to modify localization dynamically
 	topuplib.localizeHook = function(args, loc_target, misc_cat) end
@@ -343,10 +354,37 @@ do -- Cards
 	topuplib.allIsSameSuit = function(cards, suit)
 		
 	end
-	--True if the card instance is in the collection menu.
+	--If the card instance is in the collection menu, returns the row number
 	topuplib.viewedFromCollection = function(card)
-		for _,v in pairs(G.your_collection) do
-			if v == card.area then return true end
+		if not G.your_collection then return end
+		for k,v in pairs(G.your_collection) do
+			if v == card.area then return k end
+		end
+	end
+	--Gets the stats used for the ranking on the collection
+	topuplib.statsRanking = function(tbl, key, set)
+		local used_cards = {}
+		for k, v in pairs(tbl) do
+			if G.P_CENTERS[k] and G.P_CENTERS[k].set == set and G.P_CENTERS[k].discovered then
+				used_cards[#used_cards + 1] = {count = v.count, key = k}
+				--if v.count > max_amt then max_amt = v.count end
+			end
+		end
+		table.sort(used_cards, function (a, b) return a.count > b.count end )
+		local rc = math.huge
+		local rck
+		for k,v in ipairs(used_cards) do
+			if v.count < rc then
+				rc = v.count
+				rck = k
+			end
+			if v.key == key then
+				local tc = rck
+				while used_cards[tc].count ~= rc do
+					tc = tc + 1
+				end
+				return rck, #used_cards, tc - rck
+			end
 		end
 	end
 end
