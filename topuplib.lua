@@ -58,6 +58,7 @@ topuplib.debug_item_keys = {
 	"bl_topuplib_debuff",
 	"bl_topuplib_notallowed"
 }
+topuplib.configpage = 1
 do --Debugging
 	--`true` if the DebugPlus mod is installed and enabled
 	topuplib.debug = SMODS.Mods.DebugPlus and not SMODS.Mods.DebugPlus.disabled
@@ -172,6 +173,8 @@ do -- Misc
 			n = "ufunc_" .. tostring(i)
 			if not G.FUNCS[n] then
 				G.FUNCS[n] = func
+				return n
+			elseif G.FUNCS[n] == func then
 				return n
 			end
 			i = i + 1
@@ -356,7 +359,7 @@ do -- Cards
 	end
 	--If the card instance is in the collection menu, returns the row number
 	topuplib.viewedFromCollection = function(card)
-		if not G.your_collection then return end
+		if not (G.your_collection and card.area) then return end
 		for k,v in pairs(G.your_collection) do
 			if v == card.area then return k end
 		end
@@ -497,93 +500,115 @@ if config.font and (config.font ~= "?none") then
 	end
 end
 
-mod.config_tab = function()
-	local pixellated_rect_names = {}
-	local pixellated_rect_select = 1
-	for k,v in pairs(topuplib.pixellated_rect_options) do
-		pixellated_rect_names[k] = v.label
-		if v.id == config.pixellated_rect then
-			pixellated_rect_select = k
+mod.extra_tabs = function() return {
+	{
+		label = "Customization",
+		tab_definition_function = function()
+			local pixellated_rect_names = {}
+			local pixellated_rect_select = 1
+			for k,v in pairs(topuplib.pixellated_rect_options) do
+				pixellated_rect_names[k] = v.label
+				if v.id == config.pixellated_rect then
+					pixellated_rect_select = k
+				end
+			end
+			
+			local font_names = {}
+			local font_select = 1
+			for k,v in pairs(topuplib.font_options) do
+				font_names[k] = v.label
+				if v.id == config.font then
+					font_select = k
+				end
+			end
+			return {n = G.UIT.ROOT, config = {
+				colour = mod.ui_config.colour,
+			}, nodes = {
+				create_option_cycle({
+					label = "UI Element Shape",
+					options = pixellated_rect_names,
+					info = {"The shape of UI element boxes (pixellated_rect). Game will restart."},
+					current_option = pixellated_rect_select,
+					colour = G.C.BLUE,
+					w = 9,
+					opt_callback = topuplib.addUniqueFunc(function(arg)
+						local o = topuplib.pixellated_rect_options[arg.cycle_config.current_option]
+						config.pixellated_rect = o.id or "?none"
+						config.pixellated_rect_mod = (o.id and (o.mod ~= "TopUpLib")) and o.mod or nil
+						SMODS.full_restart = math.huge
+					end)
+				}),
+				create_option_cycle({
+					label = "Font",
+					options = font_names,
+					info = {"Change the game's font. Only standard font, not RU/JP/CN/KO. Game will restart."},
+					current_option = font_select,
+					colour = G.C.BLUE,
+					w = 9,
+					opt_callback = topuplib.addUniqueFunc(function(arg)
+						local o = topuplib.font_options[arg.cycle_config.current_option]
+						config.font = o.id or "?none"
+						config.font_mod = (o.id and (o.mod ~= "TopUpLib")) and o.mod or nil
+						SMODS.full_restart = math.huge
+					end)
+				})
+			}}
 		end
-	end
-	
-	local font_names = {}
-	local font_select = 1
-	for k,v in pairs(topuplib.font_options) do
-		font_names[k] = v.label
-		if v.id == config.font then
-			font_select = k
+	},
+	{
+		label = "Debug",
+		tab_definition_function = function()
+			return {n = G.UIT.ROOT, config = {
+				colour = mod.ui_config.colour,
+			}, nodes = {
+				create_option_cycle({
+					label = "Crash Prevention Patches",
+					options = {"Yes", "No"},
+					info = {"Hacky patches to prevent some crashes, but prone to causing bugs."},
+					current_option = config.crashpatches,
+					colour = G.C.BLUE,
+					w = 9,
+					opt_callback = topuplib.addUniqueFunc(function(arg)
+						config.crashpatches = arg.cycle_config.current_option
+						topuplib.preventcrash = config.crashpatches == 1
+					end)
+				}),
+				create_option_cycle({
+					label = "Debug Descriptions (UNIMPLEMENTED)",
+					options = {"Yes", "No"},
+					info = {"Show internal data on items. WIP, can crash on some types. Requires DebugPlus enabled."},
+					current_option = config.debugdescription or 2,
+					colour = G.C.BLUE,
+					w = 9,
+					opt_callback = topuplib.addUniqueFunc(function(arg)
+						config.debugdescription = arg.cycle_config.current_option
+						topuplib.debugdescription = config.debugdescription == 1
+					end)
+				})
+			}}
 		end
-	end
-	
-	return {n = G.UIT.ROOT, config = {
-		colour = mod.ui_config.colour,
-	}, nodes = {
-		create_option_cycle({
-			label = "UI Element Shape",
-			options = pixellated_rect_names,
-			info = {"The shape of UI element boxes (pixellated_rect). Game will restart."},
-			current_option = pixellated_rect_select,
-			colour = G.C.BLUE,
-			w = 9,
-			opt_callback = topuplib.addUniqueFunc(function(arg)
-				local o = topuplib.pixellated_rect_options[arg.cycle_config.current_option]
-				config.pixellated_rect = o.id or "?none"
-				config.pixellated_rect_mod = (o.id and (o.mod ~= "TopUpLib")) and o.mod or nil
-				SMODS.full_restart = math.huge
-			end)
-		}),
-		create_option_cycle({
-			label = "Font",
-			options = font_names,
-			info = {"Change the game's font. Only standard font, not RU/JP/CN/KO. Game will restart."},
-			current_option = font_select,
-			colour = G.C.BLUE,
-			w = 9,
-			opt_callback = topuplib.addUniqueFunc(function(arg)
-				local o = topuplib.font_options[arg.cycle_config.current_option]
-				config.font = o.id or "?none"
-				config.font_mod = (o.id and (o.mod ~= "TopUpLib")) and o.mod or nil
-				SMODS.full_restart = math.huge
-			end)
-		}),
-		create_option_cycle({
-			label = "Enable Updater",
-			options = {"Yes", "Only Requirements", "No"},
-			info = {"Enable updater: Checks for mod updates/requirements on startup."},
-			current_option = config.updater,
-			colour = G.C.BLUE,
-			w = 9,
-			opt_callback = topuplib.addUniqueFunc(function(arg)
-				config.updater = arg.cycle_config.current_option
-			end)
-		}),
-		create_option_cycle({
-			label = "Crash Prevention Patches",
-			options = {"Yes", "No"},
-			info = {"Hacky patches to prevent crashes, but prone to causing bugs."},
-			current_option = config.crashpatches,
-			colour = G.C.BLUE,
-			w = 9,
-			opt_callback = topuplib.addUniqueFunc(function(arg)
-				config.crashpatches = arg.cycle_config.current_option
-				topuplib.preventcrash = config.crashpatches == 1
-			end)
-		}),
-		--[[create_option_cycle({
-			label = "Debug Descriptions",
-			options = {"Yes", "No"},
-			info = {"Show internal data on items. WIP, can crash on some types. Requires DebugPlus enabled."},
-			current_option = config.debugdescription or 2,
-			colour = G.C.BLUE,
-			w = 9,
-			opt_callback = topuplib.addUniqueFunc(function(arg)
-				config.debugdescription = arg.cycle_config.current_option
-				topuplib.debugdescription = config.debugdescription == 1
-			end)
-		})]]
-	}}
-end
+	},
+	{
+		label = "Extra",
+		tab_definition_function = function()
+			return {n = G.UIT.ROOT, config = {
+				colour = mod.ui_config.colour,
+			}, nodes = {
+				create_option_cycle({
+					label = "Enable Updater",
+					options = {"Yes", "Only Requirements", "No"},
+					info = {"Enable updater: Checks for mod updates/requirements on startup."},
+					current_option = config.updater,
+					colour = G.C.BLUE,
+					w = 9,
+					opt_callback = topuplib.addUniqueFunc(function(arg)
+						config.updater = arg.cycle_config.current_option
+					end)
+				})
+			}}
+		end
+	}
+} end
 SMODS.current_mod.custom_collection_tabs = function()
 	return { UIBox_button {
 		button = 'your_collection_topuplib_music', label = {topuplib.localize('topuplib', "collection_menus").music}, minw = 5, id = 'your_collection_topuplib_music'

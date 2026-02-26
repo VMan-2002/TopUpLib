@@ -190,3 +190,45 @@ payload = '''if _c.set == "TopUpLib_Music" then
 	badges.card_type = nil
 end'''
 match_indent = true
+
+# Any stickers and custom values in challenges, copied from entropy and modified to add value support
+#                               copied from ellejokers ellejokers ellejokers ellejokers 
+# lemme take a moment and not crash out rq
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if v.eternal then card:set_eternal(true) end"
+position = "before"
+payload = '''
+if v.stickers then
+	for i, _v in ipairs(v.stickers) do
+		SMODS.Stickers[_v]:apply(card, true)
+	end
+end
+if v.ability then
+	for k, v in pairs(v.ability) do
+		card.ability[k] = v
+	end
+end
+'''
+match_indent = true
+
+# same deal for actual game
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if v.eternal then _joker:set_eternal(true) end"
+position = "before"
+payload = '''
+if v.stickers then
+	for i, _v in ipairs(v.stickers) do
+		SMODS.Stickers[_v]:apply(_joker, true)
+	end
+end
+if v.ability then
+	for k, v in pairs(v.ability) do
+		_joker.ability[k] = v
+	end
+end
+'''
+match_indent = true
