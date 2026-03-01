@@ -331,6 +331,13 @@ do -- Object spawning
 	end
 end
 do -- Cards
+	topuplib.quickGive = function(d)
+		if type(d) == "string" then
+			d = {key = d}
+		end
+		d.set = d.set or G.P_CENTERS[d.key].set
+		SMODS.add_card(d)
+	end
 	topuplib.ranksFromHand = function(hand)
 		--Returns a table where each key (a rank) is either nil or an array of cards
 		local result = {}

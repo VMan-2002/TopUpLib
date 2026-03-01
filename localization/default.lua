@@ -147,6 +147,9 @@ return {
 	misc = {
 		dictionary = {
 			--b_TopUpLib_Music = "Music" --what
+		},
+		v_text = {
+			ch_c_topuplib_debuff_joker_except = {"All Jokers except #1# are debuffed"} --table
 		}
 	},
 	descriptions = {
