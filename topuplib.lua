@@ -230,6 +230,14 @@ do -- Misc
 		end
 		return r
 	end
+	--Convert a table into one with continuous keys
+	topuplib.continuous = function(tbl)
+		local r = {}
+		for k,v in pairs(tbl) do
+			r[#r + 1] = v
+		end
+		return r
+	end
 end
 do -- Text
 	--cooler text format func.
