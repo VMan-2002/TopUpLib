@@ -132,13 +132,18 @@ do --Debugging
 		end
 		return G.P_CENTERS[name]
 	end
-	--Prevent errors for broken savegame
+	--Discard savegame if it is broken
 	topuplib.newRunFix = function()
 		success = pcall(function()
-			G.SAVED_GAME = get_compressed(G.SETTINGS.profile..'/'..'save.jkr')
-			if G.SAVED_GAME ~= nil then G.SAVED_GAME = STR_UNPACK(G.SAVED_GAME) end
+			local svcheck = get_compressed(G.SETTINGS.profile..'/'..'save.jkr')
+			if svcheck ~= nil then svcheck = STR_UNPACK(svcheck) end
 		end)
-		print(success and "Savegame is OK - No fix needed" or "Savegame INVALID - Savegame related crash is now prevented.")
+		if success then
+			print("Savegame is OK - No fix needed")
+			return
+		end
+		print("Savegame INVALID - Overriding broken savegame")
+		G.FUNCS.start_setup_run()
 	end
 end
 do -- Misc
