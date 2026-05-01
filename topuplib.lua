@@ -222,6 +222,15 @@ do -- Misc
 		end
 		return fallback
 	end
+	--Gets first key matching the filter
+	topuplib.getFirstFilteredIndex = function(tbl, filter)
+		local r = {}
+		for k,v in pairs(tbl) do
+			if filter(v,k) then
+				return k,v
+			end
+		end
+	end
 	--Count entries in a table
 	topuplib.countKeys = function(tbl)
 		local r = 0
@@ -230,11 +239,31 @@ do -- Misc
 		end
 		return r
 	end
-	--Convert a table into one with continuous keys
+	--Return a table with keys and values passing the filter
+	topuplib.filter = function(tbl, filter)
+		local r = {}
+		for k,v in pairs(tbl) do
+			if filter(v,k) then
+				r[k] = v
+			end
+		end
+		return r
+	end
+	--Convert a table into one with continuous integer keys
 	topuplib.continuous = function(tbl)
 		local r = {}
 		for k,v in pairs(tbl) do
 			r[#r + 1] = v
+		end
+		return r
+	end
+	--Return continuous keys for matching values in the table
+	topuplib.filterContinuous = function(tbl, filter)
+		local r = {}
+		for k,v in pairs(tbl) do
+			if filter(v,k) then
+				r[#r + 1] = v
+			end
 		end
 		return r
 	end
