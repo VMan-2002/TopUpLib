@@ -132,6 +132,14 @@ do --Debugging
 		end
 		return G.P_CENTERS[name]
 	end
+	--Prevent errors for broken savegame
+	topuplib.newRunFix = function()
+		success = pcall(function()
+			G.SAVED_GAME = get_compressed(G.SETTINGS.profile..'/'..'save.jkr')
+			if G.SAVED_GAME ~= nil then G.SAVED_GAME = STR_UNPACK(G.SAVED_GAME) end
+		end)
+		print(success and "Savegame is OK - No fix needed" or "Savegame INVALID - Savegame related crash is now prevented.")
+	end
 end
 do -- Misc
 	--Returns false, can be used to avoid creating new function objects
