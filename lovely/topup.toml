@@ -61,7 +61,7 @@ match_indent = true
 target = "functions/common_events.lua"
 pattern = '''--if pool is empty'''
 position = "after"
-payload = '''local _topuplib_new_pool_item = topuplib.createFallbackPoolItem(_type, _pool)
+payload = '''local _topuplib_new_pool_item = topuplib.createFallbackPoolItem(_type, _pool) ~= true
 if _pool_size == 0 and _topuplib_new_pool_item then
 	_pool[#_pool + 1] = _topuplib_new_pool_item
 else'''
