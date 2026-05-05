@@ -56,9 +56,9 @@ end
 local gcp_hook = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append)
 	if G.GAME.topuplib_universe then --what
-		local gcp_new = topuplib.universes[G.GAME.topuplib_universe.current].get_current_pool
+		local gcp_new = topuplib.universes[G.GAME.topuplib_universe.current].get_current_pool_args
 		if gcp_new then
-			return gcp_new(_type, _rarity, _legendary, _append)
+			_type, _rarity, _legendary, _append = gcp_new(_type, _rarity, _legendary, _append)
 		end
 	end
 	return gcp_hook(_type, _rarity, _legendary, _append)
