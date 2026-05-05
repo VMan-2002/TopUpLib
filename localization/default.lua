@@ -22,7 +22,7 @@ return {
 		positive_sign = "+",
 		asub = {
 			--"#SUB": Inserts provided value here
-			--Only one "#[...]SUB" is supported.
+			--Only one "#SUB" is supported.
 			chips = "{C:chips}#SUB{} Chips",
 			mult = "{C:mult}#SUB{} Mult",
 			xchips = "{X:chips,C:white}X#SUB{} Chips",
@@ -47,9 +47,9 @@ return {
 			
 			barechips = "{C:chips}#SUB{}",
 			baremult = "{C:mult}#SUB{}",
-			barexchips = "{X:chips,C:white}X#SUB{}",
-			barexmult = "{X:mult,C:white}X#SUB{}",
-			bareexpo = "{X:dark_edition,C:white}^#SUB{}",
+			barexchips = "{X:chips,C:white}#SUB{}",
+			barexmult = "{X:mult,C:white}#SUB{}",
+			bareexpo = "{X:dark_edition,C:white}#SUB{}",
 			
 			money = "{C:money}$#SUB{}",
 			xmoney = "{X:money,C:white}$X#SUB{}",
@@ -60,20 +60,20 @@ return {
 			tarot = "{C:tarot}#SUB{}",
 			planet = "{C:planet}#SUB{}",
 			spectral = "{C:spectral}#SUB{}",
-			code = "{C:cry_code}#SUB{}",
 			
 			chance = "{C:green}#SUB{}",
 			small = "{C:inactive,s:0.7}#SUB{}",
 			
-			musthaveroom = "{C:inactive}(Must have room){}",
+			musthaveroom = "{C:inactive}(#SUB){}",
 			handsize = "{C:attention}#SUB{} hand size",
+			hands = "{C:blue}#SUB{} hands",
+			discards = "{C:red}#SUB{} discards",
+			selfdestruct = "{C:red,E:1}#SUB{}",
 			
 			common = "{C:common,E:1}#SUB{}",
 			uncommon = "{C:uncommon,E:1}#SUB{}",
 			rare = "{C:rare,E:1}#SUB{}",
 			legendary = "{C:legendary,E:1}#SUB{}",
-			epic = "{C:cry_epic,E:1}#SUB{}",
-			exotic = "{C:cry_exotic,E:1}#SUB{}",
 			
 			currently = "{C:inactive}(Currently #SUB{C:inactive}){}",
 			currentattention = "{C:inactive}(Currently {C:attention}#SUB{C:inactive}){}",
@@ -93,6 +93,12 @@ return {
 			currenteemoney = "{C:inactive}(Currently {X:money,C:white}$^^#SUB{C:inactive}){}",
 			currenteeemoney = "{C:inactive}(Currently {X:money,C:white}$^^^#SUB{C:inactive}){}",
 			
+			--Cryptid
+			code = "{C:cry_code}#SUB{}",
+			epic = "{C:cry_epic,E:1}#SUB{}",
+			exotic = "{C:cry_exotic,E:1}#SUB{}",
+			
+			--Blindside
 			bs_red = "{X:red,C:white}#SUB{}",
 			bs_green = "{X:green,C:white}#SUB{}",
 			bs_blue = "{X:blue,C:white}#SUB{}",
@@ -103,17 +109,29 @@ return {
 			bs_mineral = "{C:bld_obj_mineral}#SUB{}",
 			bs_rune = "{C:bld_obj_rune}#SUB{}",
 			bs_ritual = "{C:bld_obj_ritual}#SUB{}",
+			
+			--Unik's Mod
+			crosses = "{C:unik_crosses}#SUB{}",
+			noughts = "{C:unik_noughts}#SUB{}",
+			pinkcard = "{C:unik_unik}#SUB{}",
+			copperseal = "{C:unik_copper}#SUB{}",
+			summit = "{C:unik_summit}#SUB{}",
+			lartcepts = "{X:unik_lartceps_inverse,C:unik_lartceps1}#SUB{}",
+			ancient = "{C:unik_ancient,E:1}#SUB{}",
+			redvoid = "{X:unik_void_color,E:2,C:red}#SUB{}",
+			detrimental = "{X:unik_detrimental,C:white}#SUB{}",
+			detrimental_edition = "{C:unik_shitty_edition}#SUB{}",
 		},
 		asub_defaults = {
 			baremult = "Mult",
 			barechips = "Chips",
 			barexmult = "XMult",
 			barexchips = "XChips",
+			bareexpo = "^Mult",
 			
 			tarot = "Tarot",
 			planet = "Planet",
 			spectral = "Spectral",
-			code = "Code",
 			
 			diamonds = "Diamond",
 			spades = "Spade",
@@ -123,13 +141,20 @@ return {
 			edition = "Edition",
 			dark_edition = "Edition",
 			
+			musthaveroom = "Must have room",
+			selfdestruct = "self destructs",
+			
 			common = "Common",
 			uncommon = "Uncommon",
 			rare = "Rare",
 			legendary = "Legendary",
+			
+			--Cryptid
+			code = "Code",
 			epic = "Epic",
 			exotic = "Exotic",
 			
+			--Blindside
 			bs_red = "Red",
 			bs_green = "Green",
 			bs_blue = "Blue",
@@ -140,6 +165,17 @@ return {
 			bs_mineral = "Mineral",
 			bs_rune = "Rune",
 			bs_ritual = "Ritual",
+			
+			--Unik's Mod
+			crosses = "Cross",
+			noughts = "Nought",
+			pinkcard = "Pink Card",
+			copperseal = "Copper Seal",
+			summit = "Summit",
+			lartcepts = "Lartcepts",
+			ancient = "Ancient",
+			detrimental = "Detrimental",
+			detrimental_edition = "detrimental",
 		},
 		active = "Active",
 		inactive = "Inactive"
