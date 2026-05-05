@@ -281,6 +281,23 @@ do -- Misc
 		return r
 	end
 end
+do --Files
+	--Return a filepath relative to a mod
+	topuplib.filePath = function(path, mod)
+		return (mod or SMODS.current_mod).path .. path
+	end
+	--Load a png image file as a Love2D Image
+	topuplib.loadGraphic = function(path, extra, mod)
+		local gfx = love.graphics.newImage(SMODS.NFS.read('data', topuplib.filePath("assets/gfx/"..path..".png", mod)), nil)
+		if not extra then return gfx end
+		for k,v in pairs(extra) do
+			if k == "filter" then gfx:setFilter(unpack(v)) end
+			if k == "mipmapFilter" then gfx:setMipmapFilter(unpack(v)) end
+			if k == "wrap" then gfx:Wrap(unpack(v)) end
+		end
+		return gfx
+	end
+end
 do -- Text
 	--cooler text format func.
 	--Used more like basegame text formatting
@@ -315,6 +332,15 @@ do -- Text
 			return d
 		end
 		return d
+	end
+	topuplib.simpleLocVars = function(properties)
+		local prop_vars = ""
+		for k,v in ipairs(properties) do
+			prop_vars = prop_vars .. "c.ability.extra." .. v .. ","
+		end
+		return assert(loadstring([[
+			return function(a,b,c) if not c.ability.extra then return end return {vars = {]]..prop_vars..[[}} end
+		]]), "simpleLocVars failed")()
 	end
 	--Gets localized key of an object of any type
 	topuplib.nameFromKey = function(key, fallback)
