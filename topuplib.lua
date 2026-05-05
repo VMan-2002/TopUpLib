@@ -712,6 +712,8 @@ local rq = {
 	"patches",
 	"registrymenu",
 	"card_anim",
+	"universe",
+	"universe_bg",
 	(topuplib.debug or Cryptid) and "testingcontent"
 }
 

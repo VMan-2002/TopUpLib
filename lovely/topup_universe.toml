@@ -1,0 +1,19 @@
+[manifest]
+version = "1.0.0"
+priority = 4
+
+[[patches]]
+# Universe bg draw
+[patches.pattern]
+target = "game.lua"
+pattern = '''if not G.debug_UI_toggle then'''
+position = "before"
+payload = '''
+	if topuplib.universe.background then
+		love.graphics.push()
+		topuplib.universe.background:translate_container()
+		topuplib.universe.background:draw()
+		love.graphics.pop()
+	end
+'''
+match_indent = true
