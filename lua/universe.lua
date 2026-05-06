@@ -27,10 +27,17 @@ topuplib.universe = {
 	--Travel to a universe, optionally with a transition
 	travel = function(name, transition)
 		if not transition then
+			local from = topuplib.universes[G.GAME.topuplib_universe.current]
+			if from and from.leave then
+				from.leave()
+			end
 			G.GAME.topuplib_universe.current = name
 			G.GAME.topuplib_universe.vars[name] = G.GAME.topuplib_universe.vars[name] or {}
 			topuplib.universe.vars = {}
 			topuplib.universes[name].init()
+			if topuplib.universes[name].arrive then
+				topuplib.universes[name].arrive()
+			end
 		end
 	end,
 	universes = {}

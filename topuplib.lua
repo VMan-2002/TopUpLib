@@ -280,6 +280,11 @@ do -- Misc
 		end
 		return r
 	end
+	--Returns true if the given mod exists and is not disabled
+	topuplib.modEnabled = function(name)
+		local mod = SMODS.find_mod(name)
+		return next(mod) and not mod[1].disabled
+	end
 end
 do --Files
 	--Return a filepath relative to a mod
@@ -708,6 +713,7 @@ if topuplib.debug and false then --todo: is this a good idea
 end
 
 local rq = {
+	"after_init",
 	"updater",
 	"patches",
 	"registrymenu",
