@@ -293,12 +293,17 @@ do --Files
 	end
 	--Load a png image file as a Love2D Image
 	topuplib.loadGraphic = function(path, extra, mod)
-		local gfx = love.graphics.newImage(SMODS.NFS.read('data', topuplib.filePath("assets/gfx/"..path..".png", mod)), nil)
+		local path = "assets/gfx/"..path..".png"
+		local file = SMODS.NFS.read('data', topuplib.filePath(path, mod))
+		if not file then error("[topuplib.loadGraphic] Failed to load the file at "..path.." from mod "..(SMODS.current_mod or mod).id) end
+		local gfx = love.graphics.newImage(file, nil)
 		if not extra then return gfx end
 		for k,v in pairs(extra) do
-			if k == "filter" then gfx:setFilter(unpack(v)) end
-			if k == "mipmapFilter" then gfx:setMipmapFilter(unpack(v)) end
-			if k == "wrap" then gfx:Wrap(unpack(v)) end
+			if type(v) ~= "table" then v = {v} end
+			if k == "filter" then gfx:setFilter(unpack(v))
+			elseif k == "mipmapFilter" then gfx:setMipmapFilter(unpack(v))
+			elseif k == "wrap" then gfx:Wrap(unpack(v))
+			else print("[topuplib.loadGraphic] Unrecognized parameter name \""..k.."\".") end
 		end
 		return gfx
 	end
@@ -345,7 +350,7 @@ do -- Text
 		end
 		return assert(loadstring([[
 			return function(a,b,c) if not c.ability.extra then return end return {vars = {]]..prop_vars..[[}} end
-		]]), "simpleLocVars failed")()
+		]]), "[topuplib.simpleLocVars] Failed to generate function")()
 	end
 	--Gets localized key of an object of any type
 	topuplib.nameFromKey = function(key, fallback)
