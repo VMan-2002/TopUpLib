@@ -6,6 +6,7 @@
 	"description": "Various modding features and enhancements for the Balatro video game",
 	"prefix": "topuplib",
 	"main_file": "topuplib.lua",
+	"icon_path": "modicon.png",
     "version": "0.0.0",
     "priority": -999990,
     "dependencies": [

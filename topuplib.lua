@@ -677,7 +677,20 @@ mod.extra_tabs = function() return {
 						config.debugdescription = arg.cycle_config.current_option
 						topuplib.debugdescription = config.debugdescription == 1
 					end)
-				})
+				}),
+				create_option_cycle({
+					label = "Commands",
+					options = {"Fix \"Play\" button crash", "Reset Entropy tutorial"},
+					info = {"You only need to use this if something is broken."},
+					current_option = 1,
+					colour = G.C.BLUE,
+					w = 9,
+					opt_callback = topuplib.addUniqueFunc(function(arg)
+						topuplib.debugfixcommand = arg.cycle_config.current_option
+					end)
+				}),
+				UIBox_button({button = 'topuplib_debug_fix_command', label = {"It's about time."}, minw = 7, focus_args = {snap_to = true}})
+				
 			}}
 		end
 	},
@@ -706,6 +719,18 @@ SMODS.current_mod.custom_collection_tabs = function()
 	return { UIBox_button {
 		button = 'your_collection_topuplib_music', label = {topuplib.localize('topuplib', "collection_menus").music}, minw = 5, id = 'your_collection_topuplib_music'
 	}}
+end
+
+G.FUNCS.topuplib_debug_fix_command = function()
+	if topuplib.debugfixcommand == 1 or not topuplib.debugfixcommand then
+		topuplib.newRunFix()
+	elseif topuplib.debugfixcommand == 2 and G.FUNCS.entropy_tutorial_controller then
+		G.F_SKIP_TUTORIAL = nil
+		G.SETTINGS.entropy_tutorial_complete = nil
+		G.SETTINGS.entropy_tutorial_progress = nil
+		G.FUNCS.entropy_tutorial_controller()
+		play_sound("multhit1")
+	end
 end
 
 if topuplib.debug and false then --todo: is this a good idea
