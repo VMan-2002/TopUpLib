@@ -1,0 +1,197 @@
+# Universal Draw Steps
+[manifest]
+version = "1.0.0"
+priority = 4
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''function Game:draw()'''
+position = "after"
+payload = '''
+	local topuplib_drawsteps = topuplib and topuplib.globalDrawStepHandler.run or function() end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if not G.debug_UI_toggle then'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("bg")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''for k, v in pairs(self.I.MOVEABLE) do'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("node")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if G.SPLASH_LOGO then'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("moveable")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if G.debug_splash_size_toggle then'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("splashlogo")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''timer_checkpoint('uiboxes', 'draw')'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("uiboxs")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''for k, v in pairs(self.I.CARD) do'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("cardareas")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''for k, v in pairs(self.I.UIBOX) do'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("cards")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if G.SPLASH_FRONT then
+            love.graphics.push()'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("uiboxs_attention")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''G.under_overlay = false
+        if self.OVERLAY_TUTORIAL then'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("splashfront")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if (self.OVERLAY_MENU) or (not self.F_HIDE_BG) then'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("tutorial")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if self.debug_tools then'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("overlaymenu")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''G.ALERT_ON_SCREEN = nil'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("debugtools")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if self.CONTROLLER.dragging.target and self.CONTROLLER.dragging.target ~= self.CONTROLLER.focused.target then'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("alert")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if self.CONTROLLER.focused.target and getmetatable(self.CONTROLLER.focused.target) == Card and'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("draggednode")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''for k, v in pairs(self.I.POPUP) do'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("focusedcardnotinhand")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if self.achievement_notification then'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("popup")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if self.screenwipe then'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("achievement")
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''love.graphics.push()
+        self.CURSOR:translate_container()'''
+position = "before"
+payload = '''
+	topuplib_drawsteps("screenwipe")
+'''
+match_indent = true

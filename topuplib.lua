@@ -744,6 +744,7 @@ end
 
 local rq = {
 	"after_init",
+	"global_drawsteps",
 	"updater",
 	"patches",
 	"registrymenu",

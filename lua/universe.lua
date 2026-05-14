@@ -26,6 +26,7 @@ topuplib.universes = {
 topuplib.universe = {
 	--Travel to a universe, optionally with a transition
 	travel = function(name, transition)
+		assert(topuplib.universes[name], "[topuplib.universe.travel] The target universe \""..name.."\" is not defined!")
 		if not transition then
 			local from = topuplib.universes[G.GAME.topuplib_universe.current]
 			if from and from.leave then

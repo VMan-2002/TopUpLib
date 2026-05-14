@@ -191,6 +191,17 @@ payload = '''if _c.set == "TopUpLib_Music" then
 end'''
 match_indent = true
 
+# After init
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/preflight/loader.lua"]'''
+pattern = '''SMODS.current_mod = nil'''
+position = "before"
+payload = '''
+if topuplib then topuplib.runAfterInits(mod.id) end
+'''
+match_indent = true
+
 # Any stickers and custom values in challenges, copied from entropy and modified to add value support
 #                               copied from ellejokers ellejokers ellejokers ellejokers 
 # lemme take a moment and not crash out rq
