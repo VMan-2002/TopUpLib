@@ -3,7 +3,7 @@
 
 topuplib = topuplib or {}
 local topuplib = topuplib
-topuplib.tforms = {
+topuplib.tforms = { --DEPRECATED
 	-- Scoring
 	mult = "{C:mult}",
 	xmult = "{X:mult,C:white}",
@@ -545,6 +545,12 @@ SMODS.Atlas{
 	py = 95,
 	path = "common.png"
 }
+SMODS.Atlas{
+	key = "bsky",
+	px = 66,
+	py = 66,
+	path = "dontbestupid.png"
+}
 
 mod.ui_config = {
 	colour = HEX("1A2635"), -- Color of the mod menu BG
@@ -710,6 +716,11 @@ mod.extra_tabs = function() return {
 					opt_callback = topuplib.addUniqueFunc(function(arg)
 						config.updater = arg.cycle_config.current_option
 					end)
+				}),
+				create_toggle({
+					label = "Enable if you are a repulsive \"Twitter\" user",
+					ref_table = config,
+					ref_value = 'stopcallingittwitter',
 				})
 			}}
 		end

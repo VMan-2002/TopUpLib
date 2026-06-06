@@ -39,3 +39,25 @@ function play_sound(name, pitch, vol, ...)
 	end
 	return tul_play_sound_ref(name, pitch, vol, ...)
 end
+
+local config = SMODS.Mods.TopUpLib.config
+local fuck = G.FUNCS.go_to_twitter
+G.FUNCS.go_to_twitter = function(e)
+	if config.stopcallingittwitter then
+		fuck(e)
+	else
+		love.system.openURL("https://bsky.app/profile/playbalatro.com")
+	end
+end
+local menu_ref = create_UIBox_main_menu_buttons
+function create_UIBox_main_menu_buttons(...)
+	local r = menu_ref(...)
+	if not config.stopcallingittwitter then
+		local b = r.nodes[2].nodes[1].nodes[2] 
+		b.config.colour = G.C.WHITE
+		local bsky = Sprite(0,0,0.6,0.6,G.ASSET_ATLAS["topuplib_bsky"], {x=0, y=0})
+		bsky.states.drag.can = false
+		b.nodes[1].config.object = bsky
+	end
+	return r
+end
