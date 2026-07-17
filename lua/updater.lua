@@ -5,7 +5,9 @@ print("TopUpLib updater check")
 --Detect mod list changes
 local modList = {}
 for k,v in pairs(SMODS.Mods) do
-	modList[#modList + 1] = v.id .. "%" .. v.version
+	if v.id then
+		modList[#modList + 1] = v.id .. "%" .. v.version
+	end
 end
 table.sort(modList)
 
