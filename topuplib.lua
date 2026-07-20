@@ -754,7 +754,7 @@ if topuplib.debug and false then --todo: is this a good idea
 end
 
 local rq = {
-	--[[V("1.0.0~BETA-1915a") >= V(SMODS.version) and]] "auto2x",
+	V("1.0.0~BETA-1920a") > V(SMODS.version) and "auto2x",
 	"after_init",
 	"global_drawsteps",
 	"updater",
