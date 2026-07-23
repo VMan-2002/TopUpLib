@@ -757,6 +757,7 @@ local rq = {
 	V("1.0.0~BETA-1920a") > V(SMODS.version) and "auto2x",
 	"after_init",
 	"global_drawsteps",
+	"texteffects",
 	"updater",
 	"patches",
 	"registrymenu",
