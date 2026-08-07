@@ -285,6 +285,8 @@ do -- Misc
 		local mod = SMODS.find_mod(name)
 		return next(mod) and not mod[1].disabled
 	end
+	--Function called when detail level is changed. Override this for custom behaviour.
+	topuplib.detail_changed = function(new_detail_level, old_detail_level) end
 end
 do --Files
 	--Return a filepath relative to a mod
@@ -654,7 +656,7 @@ mod.extra_tabs = function() return {
 				}),
 				create_option_cycle({
 					label = topuplib.localize().detail_title,
-					options = {topuplib.localize().detail_low, topuplib.localize().detail_medium, topuplib.localize().detail_high},
+					options = {topuplib.localize().detail_low, topuplib.localize().detail_medium, topuplib.localize().detail_high, topuplib.localize().detail_veryhigh},
 					info = {topuplib.localize().detail_desc},
 					current_option = topuplib.detail,
 					colour = G.C.BLUE,

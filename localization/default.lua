@@ -189,6 +189,7 @@ return {
 		detail_low = "Low",
 		detail_medium = "Medium",
 		detail_high = "High",
+		detail_veryhigh = "Very High",
 		uishape_title = "UI Element Shape",
 		uishape_desc = "The shape of UI element boxes (pixellated_rect).",
 		uishape_rectangle = "Rectangle",
