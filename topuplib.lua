@@ -538,6 +538,7 @@ local mod = SMODS.current_mod
 local config = mod.config
 topuplib.preventcrash = config.crashpatches == 1
 topuplib.debugdescription = config.debugdescription == 1
+topuplib.detail = config.detail or 3
 
 SMODS.Atlas{
 	key = "common",
@@ -624,9 +625,9 @@ mod.extra_tabs = function() return {
 				colour = mod.ui_config.colour,
 			}, nodes = {
 				create_option_cycle({
-					label = "UI Element Shape",
+					label = topuplib.localize().uishape_title,
 					options = pixellated_rect_names,
-					info = {"The shape of UI element boxes (pixellated_rect). Game will restart."},
+					info = {topuplib.localize().uishape_desc .. " " .. topuplib.localize().game_will_restart},
 					current_option = pixellated_rect_select,
 					colour = G.C.BLUE,
 					w = 9,
@@ -649,6 +650,20 @@ mod.extra_tabs = function() return {
 						config.font = o.id or "?none"
 						config.font_mod = (o.id and (o.mod ~= "TopUpLib")) and o.mod or nil
 						SMODS.full_restart = math.huge
+					end)
+				}),
+				create_option_cycle({
+					label = topuplib.localize().detail_title,
+					options = {topuplib.localize().detail_low, topuplib.localize().detail_medium, topuplib.localize().detail_high},
+					info = {topuplib.localize().detail_desc},
+					current_option = topuplib.detail,
+					colour = G.C.BLUE,
+					w = 9,
+					opt_callback = topuplib.addUniqueFunc(function(arg)
+						local old = config.detail
+						config.detail = arg.cycle_config.current_option
+						topuplib.detail = config.detail
+						topuplib.detail_changed(config.detail, old)
 					end)
 				})
 			}}

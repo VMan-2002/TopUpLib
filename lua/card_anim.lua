@@ -2,7 +2,7 @@ topuplib.cardAnimations = {}
 local recentchange = true
 
 local updateref = Game.update
-function Game.update(...)
+local x = function(...)
 	if recentchange then
 		recentchange = false
 		topuplib.cardAnimationsActive = {}
@@ -38,6 +38,11 @@ function Game.update(...)
 		end
 	end
 	return a
+end
+local card_anim_x = {updateref, x, x}
+
+function Game.update(...)
+	return card_anim_x[topuplib.detail](...)
 end
 
 topuplib.cardAnimation_framebased = function(self, anm)
@@ -103,4 +108,24 @@ local card_set_ability_ref = Card.set_ability
 function Card:set_ability(...)
 	recentchange = true
 	return card_set_ability_ref(self, ...)
+end
+
+local detail_changed_ref = topuplib.detail_changed
+function topuplib.detail_changed(n, o, ...)
+	if o == 1 and n ~= 1 then
+		recentchange = true
+		for av,tc in pairs(topuplib.cardAnimations) do
+			for key,anm in pairs(tc[3]) do
+				local center = G.P_CENTERS[key]
+				anm.frameNum = 0
+				anm.runFunc(center, anm)
+				for k,v in pairs(topuplib.cardAnimationTargets) do
+					if v.config.center_key == key then
+						v:topuplib_update_anim(center, anm)
+					end
+				end
+			end
+		end
+	end
+	return detail_changed_ref(n, o, ...)
 end

@@ -4,5 +4,6 @@ return {
 	["nextUpdateCheck"] = 0,
 	["crashpatches"] = 2,
 	["debugdescription"] = 2,
-	["stopcallingittwitter"] = false
+	["stopcallingittwitter"] = false,
+	["detail"] = 3
 }

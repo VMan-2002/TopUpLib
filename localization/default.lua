@@ -182,7 +182,19 @@ return {
 			detrimental_edition = "detrimental",
 		},
 		active = "Active",
-		inactive = "Inactive"
+		inactive = "Inactive",
+		game_will_restart = "Game will restart.",
+		detail_title = "Detail Level",
+		detail_desc = "Lower detail means higher performance.",
+		detail_low = "Low",
+		detail_medium = "Medium",
+		detail_high = "High",
+		uishape_title = "UI Element Shape",
+		uishape_desc = "The shape of UI element boxes (pixellated_rect).",
+		uishape_rectangle = "Rectangle",
+		uishape_rounded_rectangle = "Rounded Rectangle",
+		uishape_circle = "Circle",
+		uishape_cat_emoji = "Cat Emoji"
 	},
 	misc = {
 		dictionary = {
