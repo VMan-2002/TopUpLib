@@ -39,7 +39,7 @@ local x = function(...)
 	end
 	return a
 end
-local card_anim_x = {updateref, x, x}
+local card_anim_x = {updateref, x, x, x}
 
 function Game.update(...)
 	return card_anim_x[topuplib.detail](...)
