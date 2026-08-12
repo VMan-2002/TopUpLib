@@ -287,6 +287,8 @@ do -- Misc
 	end
 	--Function called when detail level is changed. Override this for custom behaviour.
 	topuplib.detail_changed = function(new_detail_level, old_detail_level) end
+	-- Function called when a run is started (not using the continue menu.)
+	topuplib.start_run_init = function() end
 end
 do --Files
 	--Return a filepath relative to a mod

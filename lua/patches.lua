@@ -61,3 +61,12 @@ function create_UIBox_main_menu_buttons(...)
 	end
 	return r
 end
+
+local start_run_ref = Game.start_run
+function Game.start_run(...)
+	local ret = {start_run_ref(...)}
+	if not G.GAME.topuplib_init then
+		topuplib.start_run_init()
+	end
+	return unpack(ret)
+end
