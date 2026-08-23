@@ -514,11 +514,13 @@ do -- Cards
 				c = 0
 			end
 			if ds.centers then
+				local center_c = 0
 				for k,v in pairs(ds.centers) do
 					if G.P_CENTERS[v].discovered then
-						c = c + 1
+						center_c = center_c + 1
 					end
 				end
+				c = ds.accumilate and (ds.accumilate(c, center_c)) or (c + center_c)
 			end
 			return c >= ds.count
 		end
