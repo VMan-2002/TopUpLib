@@ -157,10 +157,6 @@ do -- Misc
 	topuplib.txbug = "{C:chips,s:0.7}(known bugs){}"
 	--Returns the same as one input value
 	topuplib.same = function(value) return value end
-	--Fallback for to_number from talisman
-	topuplib.num = to_number or topuplib.same
-	--Fallback for to_big from talisman
-	topuplib.big = to_big or topuplib.same
 	--Override this function in your custom shapes
 	topuplib.pixellated_rect = topuplib.returnFalse
 	--Add an option to topuplib config for your mod's UI element shape
@@ -562,6 +558,18 @@ do -- Internal use
 			result = result .. topuplib.formatString(v[1] or "", v[2] or "r")
 		end
 		return result
+	end
+	--Deprecated
+	--Fallback for to_number from talisman
+	topuplib.num = function(...)
+		print("[TopUpLib] Use of deprecated topuplib.num !!")
+		return to_number and to_number(...) or topuplib.same(...)
+	end
+	--Deprecated
+	--Fallback for to_big from talisman
+	topuplib.big = function(...)
+		print("[TopUpLib] Use of deprecated topuplib.big !!")
+		return to_big and to_big(...) or topuplib.same(...)
 	end
 end
 
