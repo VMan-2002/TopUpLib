@@ -71,6 +71,7 @@ return {
 			hands = "{C:blue}#SUB{} hands",
 			discards = "{C:red}#SUB{} discards",
 			selfdestruct = "{C:red,E:1}#SUB{}",
+			probabilities = "{C:green,E:1}#SUB{}",
 			
 			common = "{C:common,E:1}#SUB{}",
 			uncommon = "{C:uncommon,E:1}#SUB{}",
@@ -94,6 +95,8 @@ return {
 			currentemoney = "{C:inactive}(Currently {X:money,C:white}$^#SUB{C:inactive}){}",
 			currenteemoney = "{C:inactive}(Currently {X:money,C:white}$^^#SUB{C:inactive}){}",
 			currenteeemoney = "{C:inactive}(Currently {X:money,C:white}$^^^#SUB{C:inactive}){}",
+			
+			locked_legendary = "{E:1,s:1.3}#SUB{}",
 			
 			--Cryptid
 			code = "{C:cry_code}#SUB{}",
@@ -147,11 +150,14 @@ return {
 			
 			musthaveroom = "Must have room",
 			selfdestruct = "self destructs",
+			probabilities = "probabilities",
 			
 			common = "Common",
 			uncommon = "Uncommon",
 			rare = "Rare",
 			legendary = "Legendary",
+			
+			locked_legendary = "?????",
 			
 			--Cryptid
 			code = "Code",

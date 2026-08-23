@@ -77,7 +77,7 @@ do --Debugging
 				r[#r + 1] = tostring(k)..": "..type(v).." "..tostring(v)
 				keys[#keys + 1] = tostring(k)
 			end
-			print(name .. ": " .. tostring(value) .. ", table with length " .. #value .. " and " .. tostring(r).." keys")
+			print(name .. ": " .. tostring(value) .. ", table with length " .. #value .. " and " .. #r.." keys")
 			print("inspect: {" .. table.concat(r, ", ") .. "}")
 			print("keys: {" .. table.concat(keys, ", ") .. "}")
 		else
@@ -485,6 +485,42 @@ do -- Cards
 				end
 				return rck, #used_cards, tc - rck
 			end
+		end
+	end
+	--Checks the `discovery_unlock` table in the center def
+	--`set`: The set to check unlock count for (if nil, checks everything, if table, checks all in table)
+	--`centers`: Additional center keys to count
+	--`accumilate`: If `set` is a table, this is the function to use when adding counts from different sets (if nil, addition). `math.min` or `math.max` are good to use here
+	--`count`: The amount of items needed to be discovered
+	topuplib.discoveryUnlock = function(self, args)
+		if args.type == "discover_amount" then
+			local ds = self.discovery_unlock
+			local c
+			if type(ds.set) == "table" then
+				local sc
+				for k,v in pairs(ds) do
+					sc = G.DISCOVER_TALLIES[v:lower() .. "s"].tally
+					if not c then
+						c = sc
+					elseif ds.accumilate then
+						c = ds.accumilate(c, sc)
+					else
+						c = c + sc
+					end
+				end
+			elseif ds.set then
+				c = G.DISCOVER_TALLIES[ds.set and (ds.set:lower() .. "s") or "total"].tally
+			else
+				c = 0
+			end
+			if ds.centers then
+				for k,v in pairs(ds.centers) do
+					if G.P_CENTERS[v].discovered then
+						c = c + 1
+					end
+				end
+			end
+			return c >= ds.count
 		end
 	end
 end
