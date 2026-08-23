@@ -492,6 +492,7 @@ do -- Cards
 		if args.type == "discover_amount" then
 			local ds = self.discovery_unlock
 			local c
+			assert(ds, "[topuplib.discoveryUnlock] No discovery_unlock table found in "..self.key)
 			if type(ds.set) == "table" then
 				local sc
 				for k,v in pairs(ds) do
@@ -520,6 +521,25 @@ do -- Cards
 			end
 			return c >= ds.count
 		end
+	end
+	--SMODS should have `Card.is_rank`, but until then...
+	topuplib.isRank = function(card, rank)
+		if SMODS.has_no_rank(card) then
+			return false
+		end
+		if CARDMERGE and CARDMERGE.HasRank(card, SMODS.Ranks[rank].id) then
+			return true
+		end
+		return this:get_id() == SMODS.Ranks[rank].id
+	end
+	topuplib.isRanks = function(card, ranks)
+		if SMODS.has_no_rank(card) then
+			return false
+		end
+		for k,v in ipairs(ranks) do
+			if topuplib.isRank(card, v) then return true end
+		end
+		return false
 	end
 end
 do -- Internal use
