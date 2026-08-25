@@ -527,7 +527,7 @@ do -- Cards
 		if SMODS.has_no_rank(card) then
 			return false
 		end
-		if CARDMERGE and CARDMERGE.HasRank(card, SMODS.Ranks[rank].id) then
+		if CARDMERGE and CARDMERGE.HasRank(card, tostring(SMODS.Ranks[rank].id)) then
 			return true
 		end
 		return card:get_id() == SMODS.Ranks[rank].id
