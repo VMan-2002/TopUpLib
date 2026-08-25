@@ -530,7 +530,7 @@ do -- Cards
 		if CARDMERGE and CARDMERGE.HasRank(card, SMODS.Ranks[rank].id) then
 			return true
 		end
-		return this:get_id() == SMODS.Ranks[rank].id
+		return card:get_id() == SMODS.Ranks[rank].id
 	end
 	topuplib.isRanks = function(card, ranks)
 		if SMODS.has_no_rank(card) then
