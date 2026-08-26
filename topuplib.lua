@@ -840,7 +840,7 @@ end
 
 local rq = {
 	V("1.0.0~BETA-1920a") > V(SMODS.version) and "auto2x",
-	"blindatlasoptimizer",
+	--"blindatlasoptimizer",
 	"after_init",
 	"global_drawsteps",
 	"texteffects",
