@@ -1,0 +1,13 @@
+[manifest]
+version = "1.0.0"
+priority = 1
+
+[[patches]]
+[patches.pattern]
+target = "engine/animatedsprite.lua"
+pattern = "if new_frame ~= self.current_animation.current then"
+position = "before"
+payload = '''
+new_frame = math.max(new_frame - self.current_animation.firstframes, 0)
+'''
+match_indent = true
