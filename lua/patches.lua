@@ -79,8 +79,8 @@ end
 --Custom tab injects
 local create_tabs_ref = create_tabs
 function create_tabs(args)
-	for k,v in pairs(SMODS.Mods) do
-		if v.can_load and v.topuplib_tabsModify then
+	for k,v in pairs(topuplib.modOrder) do
+		if v.topuplib_tabsModify then
 			v.topuplib_tabsModify(args, topuplib.createTabsMeaning)
 		end
 	end

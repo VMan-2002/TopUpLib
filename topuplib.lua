@@ -285,6 +285,8 @@ do -- Misc
 	topuplib.detail_changed = function(new_detail_level, old_detail_level) end
 	-- Function called when a run is started (not using the continue menu.)
 	topuplib.start_run_init = function() end
+	-- Return a table of enabled mods in order
+	topuplib.modOrder = {}
 end
 do --Files
 	--Return a filepath relative to a mod
@@ -562,6 +564,20 @@ do -- Internal use
 		local mesh = love.graphics.newMesh(result, "fan", "static")
 		mesh:setTexture(self.config.pixellated_rect_texture)
 		return mesh
+	end
+	--Popuplate topuplib.modOrder
+	local keyset = {}
+	for k, _ in pairs(SMODS.mod_priorities) do
+		keyset[#keyset + 1] = k
+	end
+	table.sort(keyset)
+	for _,p in ipairs(keyset) do
+		for _,i in ipairs(SMODS.mod_priorities[p]) do
+			local m = SMODS.Mods[i]
+			if m.can_load and not m.lovely_only then
+				table.insert(topuplib.modOrder, m)
+			end
+		end
 	end
 	--Deprecated
 	--Adds predefined formatting to a single string
