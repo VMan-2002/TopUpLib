@@ -80,6 +80,8 @@ topuplib.globalDrawStepHandler = {
 		if topuplib.globalDrawStepHandler.RUN_NUM ~= 17 or n ~= topuplib.globalDrawStepHandler.steporder[topuplib.globalDrawStepHandler.RUN_NUM + 1][1] then
 			return
 		end
+		topuplib.globalDrawStepHandler.RUN_NUM = topuplib.globalDrawStepHandler.RUN_NUM + 1
+		print("Draw step "..n)
 		for k,v in ipairs(topuplib.globalDrawStepHandler.steps[n]) do
 			love.graphics.push()
 			v.func()
@@ -95,9 +97,9 @@ end
 
 topuplib.globalDrawStep = function(d)
 	assert(d.key, "[topuplib.globalDrawStep] Missing key!")
-	assert(d.order, "[topuplib.globalDrawStep] Missing order!")
-	assert(d.func, "[topuplib.globalDrawStep] Missing func!")
 	d.key = SMODS.current_mod.prefix .. "_" .. d.key
+	assert(d.order, "[topuplib.globalDrawStep] "..d.key.." missing order!")
+	assert(d.func, "[topuplib.globalDrawStep] "..d.key.." missing func!")
 	local a = 1
 	while topuplib.globalDrawStepHandler.steporder[a][2] > d.order do
 		a = a + 1
