@@ -1,3 +1,4 @@
+--Emplace calc
 local tul_cardarea_emplace_ref = CardArea.emplace
 function CardArea:emplace(card, ...)
 	tul_cardarea_emplace_ref(self, card, ...)
@@ -6,6 +7,7 @@ function CardArea:emplace(card, ...)
 	end
 end
 
+--Debuff joker except
 tul_debuff_ref = Blind.drawn_to_hand
 function Blind:drawn_to_hand(...)
 	local a = tul_debuff_ref(self, ...)
@@ -17,6 +19,7 @@ function Blind:drawn_to_hand(...)
 	return a
 end
 
+--Play sound
 tul_play_sound_ref = play_sound
 local talisman_fallbacks = next(SMODS.find_mod("Talisman")) and {
 	talisman_echip = "xchips",
@@ -40,6 +43,7 @@ function play_sound(name, pitch, vol, ...)
 	return tul_play_sound_ref(name, pitch, vol, ...)
 end
 
+--Get rid of the eyesore
 local config = SMODS.Mods.TopUpLib.config
 local fuck = G.FUNCS.go_to_twitter
 G.FUNCS.go_to_twitter = function(e)
@@ -62,6 +66,7 @@ function create_UIBox_main_menu_buttons(...)
 	return r
 end
 
+--Start run init
 local start_run_ref = Game.start_run
 function Game.start_run(...)
 	local ret = {start_run_ref(...)}
@@ -69,4 +74,34 @@ function Game.start_run(...)
 		topuplib.start_run_init()
 	end
 	return unpack(ret)
+end
+
+--Custom tab injects
+local create_tabs_ref = create_tabs
+function create_tabs(args)
+	for k,v in pairs(SMODS.Mods) do
+		if v.can_load and v.topuplib_tabsModify then
+			v.topuplib_tabsModify(args, topuplib.createTabsMeaning)
+		end
+	end
+	topuplib.createTabsMeaning = nil
+	return create_tabs_ref(args)
+end
+
+local runinfo_ref = G.UIDEF.run_info
+function G.UIDEF.run_info(...)
+	topuplib.createTabsMeaning = "run_info"
+	return runinfo_ref(...)
+end
+
+local runsetup_ref = G.UIDEF.run_setup
+function G.UIDEF.run_setup(...)
+	topuplib.createTabsMeaning = "run_setup"
+	return runsetup_ref(...)
+end
+
+local usagetabs_ref = G.UIDEF.usage_tabs
+function G.UIDEF.usage_tabs(...)
+	topuplib.createTabsMeaning = "usage_tabs"
+	return usagetabs_ref(...)
 end
