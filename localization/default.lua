@@ -562,6 +562,10 @@ return {
 					"Top {C:attention}#2#/#3#",
 					"{C:inactive}Tied with #4# others"
 				}
+		fac_Rod = {
+			rod_topuplib_toprod = {
+				name = "Top Rod",
+				text = {"{C:attention}Guaranteed","catch","Start with","extra {C:fac_sand_dollars,f:fac_sand_dollars}${C:fac_sand_dollars}999{}"}
 			}
 		}
 	}
