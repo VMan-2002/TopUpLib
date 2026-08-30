@@ -565,6 +565,7 @@ do -- Internal use
 		mesh:setTexture(self.config.pixellated_rect_texture)
 		return mesh
 	end
+	G.FUNCS.do_nothing = topuplib.returnTrue
 	--Popuplate topuplib.modOrder
 	local keyset = {}
 	for k, _ in pairs(SMODS.mod_priorities) do
@@ -648,41 +649,39 @@ mod.ui_config = {
 	collection_back_colour = G.C.BLUE -- Color of the "Back" button in the collections menu. Defaults to `back_colour` if not provided.
 }
 
-topuplib.addPixellatedRectOption("Default")
-topuplib.addPixellatedRectOption("Rectangle", "lua/shapes/rect")
-topuplib.addPixellatedRectOption("Rounded Rectangle", "lua/shapes/roundrect")
-topuplib.addPixellatedRectOption("Circle", "lua/shapes/circle")
-topuplib.addPixellatedRectOption("Cat Emoji", "lua/shapes/cat")
+do --custom pixellated rects
+	topuplib.addPixellatedRectOption("Default")
+	topuplib.addPixellatedRectOption("Rectangle", "lua/shapes/rect")
+	topuplib.addPixellatedRectOption("Rounded Rectangle", "lua/shapes/roundrect")
+	topuplib.addPixellatedRectOption("Circle", "lua/shapes/circle")
+	topuplib.addPixellatedRectOption("Cat Emoji", "lua/shapes/cat")
 
-topuplib.addFontOption("Default (m6x11)")
-topuplib.addFontOption("Oswald", "lua/fonts/oswald")
-topuplib.addFontOption("Terrance Big", "lua/fonts/terrancebig")
-topuplib.addFontOption("Comic Sans MS", "lua/fonts/comic")
-
---[[local function setFont(lol)
-	G.FONTS[1] = lol
-	G.FONTS[1].FONT = love.graphics.newFont( lol.file, lol.render_scale)
-end
-setFont({file = "Mods/topuplib/assets/fonts/Oswald-Medium.ttf", render_scale = G.TILESIZE*10, TEXT_HEIGHT_SCALE = 0.83, TEXT_OFFSET = {x=10,y=-20}, FONTSCALE = 0.1, squish = 1, DESCSCALE = 1})]]
-
-if config.pixellated_rect and (config.pixellated_rect ~= "?none") then
-	print("Load pixellated rect: ", pcall(SMODS.load_file(config.pixellated_rect..".lua", config.pixellated_rect_mod)))
+	if config.pixellated_rect and (config.pixellated_rect ~= "?none") then
+		print("Load pixellated rect: ", pcall(SMODS.load_file(config.pixellated_rect..".lua", config.pixellated_rect_mod)))
+	end
 end
 
-if config.font and (config.font ~= "?none") then
-	print("Load font: ", pcall(SMODS.load_file(config.font..".lua", config.font_mod)))
-	local p = topuplib.font_replacement
-	if p then
-		p.FONT = love.graphics.newFont( "Mods" .. topuplib.modFolderName(config.font_mod or mod.id) .. "assets/fonts/" .. p.file, p.render_scale)
-		if p.antialias then
-			p.FONT:setFilter("linear", "linear")
-		end
-		for k,v in pairs(G.LANGUAGES) do
-			if v.font == G.FONTS[1] then
-				v.font = p
+do --custom fonts
+	topuplib.addFontOption("Default (m6x11)")
+	topuplib.addFontOption("Oswald", "lua/fonts/oswald")
+	topuplib.addFontOption("Terrance Big", "lua/fonts/terrancebig")
+	topuplib.addFontOption("Comic Sans MS", "lua/fonts/comic")
+
+	if config.font and (config.font ~= "?none") then
+		print("Load font: ", pcall(SMODS.load_file(config.font..".lua", config.font_mod)))
+		local p = topuplib.font_replacement
+		if p then
+			p.FONT = love.graphics.newFont( "Mods" .. topuplib.modFolderName(config.font_mod or mod.id) .. "assets/fonts/" .. p.file, p.render_scale)
+			if p.antialias then
+				p.FONT:setFilter("linear", "linear")
 			end
+			for k,v in pairs(G.LANGUAGES) do
+				if v.font == G.FONTS[1] then
+					v.font = p
+				end
+			end
+			G.FONTS[1] = p
 		end
-		G.FONTS[1] = p
 	end
 end
 
