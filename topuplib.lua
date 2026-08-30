@@ -866,7 +866,8 @@ local rq = {
 	"card_anim",
 	"universe",
 	"universe_bg",
-	(topuplib.debug or Cryptid) and "testingcontent"
+	(topuplib.debug or Cryptid) and "testingcontent",
+	(topuplib.debug and topuplib.modEnabled("FishAndChips")) and "toprod"
 }
 
 for i, v in ipairs(rq) do
