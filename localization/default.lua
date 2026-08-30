@@ -562,6 +562,15 @@ return {
 					"Top {C:attention}#2#/#3#",
 					"{C:inactive}Tied with #4# others"
 				}
+			},
+			topuplib_tempdebuff = {
+				name = "Temporary Debuff",
+				text = {
+					"Card is debuffed",
+					"for {C:attention}#1#{} rounds"
+				}
+			}
+		},
 		fac_Rod = {
 			rod_topuplib_toprod = {
 				name = "Top Rod",
